@@ -25,6 +25,11 @@ class TransifexShell extends AppShell {
 		$this->Transifex = new TransifexLib($settings);
 	}
 
+	/**
+	 * TransifexShell::resources()
+	 *
+	 * @return void
+	 */
 	public function resources() {
 		$resources = $this->Transifex->getResources();
 		foreach ($resources as $resource) {
@@ -32,6 +37,11 @@ class TransifexShell extends AppShell {
 		}
 	}
 
+	/**
+	 * TransifexShell::languages()
+	 *
+	 * @return void
+	 */
 	public function languages() {
 		$languages = $this->_languages();
 		foreach ($languages as $language) {
@@ -39,6 +49,11 @@ class TransifexShell extends AppShell {
 		}
 	}
 
+	/**
+	 * TransifexShell::pull()
+	 *
+	 * @return void
+	 */
 	public function pull() {
 		$options = $availableLanguages = $this->_languages();
 		$options[] = '*';
@@ -111,6 +126,11 @@ class TransifexShell extends AppShell {
 		$this->out('...done');
 	}
 
+	/**
+	 * TransifexShell::_resources()
+	 *
+	 * @return array
+	 */
 	protected function _resources() {
 		$ret = array();
 		$resources = $this->Transifex->getResources();
@@ -120,6 +140,11 @@ class TransifexShell extends AppShell {
 		return $ret;
 	}
 
+	/**
+	 * TransifexShell::_languages()
+	 *
+	 * @return array
+	 */
 	protected function _languages() {
 		$translations = $this->Transifex->getProject();
 		if (!isset($translations['teams'])) {

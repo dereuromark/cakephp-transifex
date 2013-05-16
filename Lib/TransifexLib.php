@@ -20,6 +20,10 @@ class TransifexLib {
 		if (empty($this->settings['user']) || empty($this->settings['password'])) {
 			throw new RuntimeException('Credentials missing');
 		}
+
+		if (!function_exists('curl_init')) {
+			throw new RuntimeException('cURL needs to be installed/enabled');
+		}
 	}
 
 	/**
