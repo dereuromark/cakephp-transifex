@@ -87,6 +87,9 @@ class TransifexShell extends AppShell {
 				}
 				$L10n = new L10n();
 				$locale = $L10n->map($language);
+				if (!$locale) {
+					$locale = $language;
+				}
 
 				$path = !empty($this->params['plugin']) ? CakePlugin::path($this->params['plugin']) : APP;
 				$file = $path . 'Locale' . DS . $locale . DS . 'LC_MESSAGES' . DS . $resource . '.po';
@@ -147,6 +150,11 @@ class TransifexShell extends AppShell {
 					'short' => 'r',
 					'help' => __d('cake_console', 'Resource'),
 					'default' => '',
+				),
+				'plugin' => array(
+					'short' => 'p',
+					'help' => __d('cake_console', 'Plugin'),
+					'default' => ''
 				),
 				'dry-run'=> array(
 					'short' => 'd',
