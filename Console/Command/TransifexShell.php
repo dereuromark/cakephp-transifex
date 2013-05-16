@@ -16,9 +16,13 @@ class TransifexShell extends AppShell {
 	public $Transifex;
 
 	public function startup() {
-		$this->Transifex = new TransifexLib();
-
 		parent::startup();
+
+		$settings = array();
+		if (!empty($this->params['project'])) {
+			$settings['project'] = $this->params['project'];
+		}
+		$this->Transifex = new TransifexLib($settings);
 	}
 
 	public function resources() {
@@ -129,6 +133,11 @@ class TransifexShell extends AppShell {
 	public function getOptionParser() {
 		$subcommandParser = array(
 			'options' => array(
+				'project' => array(
+					'short' => 'o',
+					'help' => __d('cake_console', 'Project'),
+					'default' => '',
+				),
 				'language' => array(
 					'short' => 'l',
 					'help' => __d('cake_console', 'Language'),
@@ -149,8 +158,12 @@ class TransifexShell extends AppShell {
 
 		return parent::getOptionParser()
 			->description(__d('cake_console', "The Convert Shell converts files from dos/unix/mac to another system"))
-			->addSubcommand('resources')
-			->addSubcommand('languges')
+			->addSubcommand('resources', array(
+				'help' => __d('cake_console', 'List all resources'),
+			))
+			->addSubcommand('languges', array(
+				'help' => __d('cake_console', 'List all languages'),
+			))
 			->addSubcommand('pull', array(
 				'help' => __d('cake_console', 'Pull PO files'),
 				'parser' => $subcommandParser

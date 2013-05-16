@@ -41,5 +41,17 @@ Tip: If you want to dry-run it first, use `-d -v`. This will not modify your loc
 The PO files will be stored in `APP/Locale/{locale}/LC_MESSAGES/{resource}.po`.
 Using subversion or git is highly reocmmended to quickly overview and confirm the changes made.
 
+### Advanced usage
+
+To pull locales for a plugin you need to set `--plugin` or `-p`:
+
+	cake Transifex.Transifex pull -p Tools
+
+If you happen to have one primary project and several other (plugin/cakecore) projects, you can overwrite the config project setting using `--project` or `-o`:
+
+	cake Transifex.Transifex pull -o cakephp
+
 ## Disclaimer
+License: MIT
+
 Use at your own risk. Please provide any fixes or enhancements via issue or better pull request.
