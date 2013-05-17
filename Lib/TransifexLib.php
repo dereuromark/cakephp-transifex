@@ -96,6 +96,13 @@ class TransifexLib {
 		return $this->_get($url);
 	}
 
+	/**
+	 * TransifexLib::getStats()
+	 *
+	 * @param string $resource
+	 * @param string $language
+	 * @return array
+	 */
 	public function getStats($resource, $language = null) {
 		if ($language) {
 			$language .= '/';
@@ -111,11 +118,11 @@ class TransifexLib {
 	 * @return array
 	 */
 	protected function _get($url) {
-		$socket = new HttpSocket();
-		$socket->configAuth('Basic', $this->settings['user'], $this->settings['password']);
+		$Socket = new HttpSocket();
+		$Socket->configAuth('Basic', $this->settings['user'], $this->settings['password']);
 
 		$url = String::insert($url, $this->settings, array('before' => '{', 'after' => '}'));
-		$response = $socket->get($url);
+		$response = $Socket->get($url);
 		if (!$response->isOk()) {
 			throw new RuntimeException('Unable to retrieve data from API');
 		}

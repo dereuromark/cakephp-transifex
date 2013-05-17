@@ -58,6 +58,38 @@ class TransifexShell extends AppShell {
 	}
 
 	/**
+	 * TransifexShell::statistics()
+	 *
+	 * @return void
+	 */
+	public function statistics() {
+		$resource = $language = null;
+		if (!empty($this->args[0])) {
+			$resource = $this->args[0];
+		}
+		if (!empty($this->args[1])) {
+			$language = $this->args[1];
+		}
+		if (empty($resource)) {
+			$this->error('Please provide a resource - and optionally a language.');
+		}
+
+		$stats = $this->Transifex->getStats($resource, $language);
+		if ($language) {
+			$stats = array($language => $stats);
+		}
+
+		foreach ($stats as $language => $stat) {
+			$this->out('*** ' . $language . ' ***');
+			$translated =  $stat['translated_entities'];
+			$total = $stat['translated_entities'] + $stat['untranslated_entities'];
+			$this->out('Translated: ' . $stat['completed'] . ' (' . $translated . ' of ' . $total . ')');
+
+			$this->out();
+		}
+	}
+
+	/**
 	 * TransifexShell::pull()
 	 *
 	 * @return void
@@ -258,8 +290,11 @@ class TransifexShell extends AppShell {
 			->addSubcommand('resources', array(
 				'help' => __d('cake_console', 'List all resources'),
 			))
-			->addSubcommand('languges', array(
+			->addSubcommand('languages', array(
 				'help' => __d('cake_console', 'List all languages'),
+			))
+			->addSubcommand('statistics', array(
+				'help' => __d('cake_console', 'Display project statistics'),
 			))
 			->addSubcommand('pull', array(
 				'help' => __d('cake_console', 'Pull PO files'),
