@@ -45,6 +45,10 @@ class TransifexShell extends AppShell {
 	public function languages() {
 		$languages = $this->_languages();
 		foreach ($languages as $language) {
+			$res = $this->_getCatalog($language);
+			if (!empty($res['language'])) {
+				$language .= ' | ' . $res['language'];
+			}
 			$this->out(' - ' . $language);
 		}
 	}
@@ -55,7 +59,6 @@ class TransifexShell extends AppShell {
 	 * @return void
 	 */
 	public function pull() {
-		$l10n = new L10n();
 		$options = $availableLanguages = $this->_languages();
 		$options[] = '*';
 
@@ -113,17 +116,7 @@ class TransifexShell extends AppShell {
 					continue;
 				}
 
-				$locale = $language;
-				$catalog = $l10n->catalog(strtolower(str_replace('_', '-', $language)));
-				if (!empty($catalog['locale'])) {
-					$locale = $catalog['locale'];
-				} elseif (strpos($language, '_')) {
-					list($languagePrefix) = explode('_', $language);
-					$catalog = $l10n->catalog($languagePrefix);
-					if (!empty($catalog['locale'])) {
-						$locale = $catalog['locale'];
-					}
-				}
+				$locale = $this->_getLocale($language);
 
 				$path = !empty($this->params['plugin']) ? CakePlugin::path($this->params['plugin']) : APP;
 				$file = $path . 'Locale' . DS . $locale . DS . 'LC_MESSAGES' . DS . $resource . '.po';
@@ -143,6 +136,44 @@ class TransifexShell extends AppShell {
 		}
 
 		$this->out('...done');
+	}
+
+	/**
+	 * TransifexShell::_getLocale()
+	 *
+	 * @param string $language
+	 * @return string Locale
+	 */
+	protected function _getLocale($language) {
+		$locale = $language;
+		$catalog = $this->_getCatalog($language);
+		if (!empty($catalog['locale'])) {
+			$locale = $catalog['locale'];
+		}
+		return $locale;
+	}
+
+	/**
+	 * TransifexShell::_getCatalog()
+	 *
+	 * @param mixed $language
+	 * @return array Catalog
+	 */
+	protected function _getCatalog($language) {
+		if (!isset($this->L10n)) {
+			$this->L10n = new L10n();
+		}
+		$catalog = $this->L10n->catalog(strtolower(str_replace('_', '-', $language)));
+		if (!empty($catalog['locale'])) {
+			return $catalog;
+		} elseif (strpos($language, '_')) {
+			list($languagePrefix) = explode('_', $language);
+			$catalog = $this->L10n->catalog($languagePrefix);
+			if (!empty($catalog['locale'])) {
+				return $catalog;
+			}
+		}
+		return array();
 	}
 
 	/**
