@@ -137,6 +137,7 @@ class TransifexShell extends AppShell {
 		foreach ($resources as $resource) {
 			$ret[] = $resource['slug'];
 		}
+		sort($ret);
 		return $ret;
 	}
 
@@ -150,6 +151,7 @@ class TransifexShell extends AppShell {
 		if (!isset($translations['teams'])) {
 			$this->error('No such project');
 		}
+		sort($translations['teams']);
 		return $translations['teams'];
 	}
 
