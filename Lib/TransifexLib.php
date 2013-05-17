@@ -85,10 +85,14 @@ class TransifexLib {
 	 *
 	 * @param mixed $resource
 	 * @param mixed $language
+	 * @param boolean $reviewedOnly
 	 * @return array
 	 */
-	public function getTranslations($resource, $language) {
+	public function getTranslations($resource, $language, $reviewedOnly = false) {
 		$url = self::BASE_URL.'project/{project}/resource/'.$resource.'/translation/'.$language.'/';
+		if ($reviewedOnly) {
+			$url .= '?mode=reviewed';
+		}
 		return $this->_get($url);
 	}
 

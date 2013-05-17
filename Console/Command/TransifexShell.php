@@ -59,10 +59,13 @@ class TransifexShell extends AppShell {
 		$options = $availableLanguages = $this->_languages();
 		$options[] = '*';
 
+		$questioning = false;
+
 		if (!empty($this->params['language'])) {
 			$language = $this->params['language'];
 		} else {
 			$language = $this->in('Language', $options, '*');
+			$questioning = true;
 		}
 		if (!in_array($language, $options, true)) {
 			$this->error('No such language');
@@ -81,6 +84,7 @@ class TransifexShell extends AppShell {
 			$resource = $this->params['resource'];
 		} else {
 			$resource = $this->in('Resource', $options, '*');
+			$questioning = true;
 		}
 		if (!in_array($resource, $options, true)) {
 			$this->error('No such resource');
@@ -92,11 +96,18 @@ class TransifexShell extends AppShell {
 			$resources = (array)$resource;
 		}
 
+		$approvedOnly = false;
+		if ($questioning && !$this->params['reviewed-only']) {
+			$approvedOnly = $this->in('Only reviewed translations', array('y', 'n'), 'n') === 'y';
+		} else {
+			$approvedOnly = $this->params['reviewed-only'];
+		}
+
 		foreach ($languages as $language) {
 			foreach ($resources as $resource) {
 				$this->out(__('Generating PO file for ' . $language . ' and ' . $resource), 1, Shell::VERBOSE);
 
-				$translations = $this->Transifex->getTranslations($resource, $language);
+				$translations = $this->Transifex->getTranslations($resource, $language, $approvedOnly);
 				if (empty($translations['content'])) {
 					$this->err(' - no PO file for ' . $language . ' and ' . $resource);
 					continue;
@@ -185,6 +196,10 @@ class TransifexShell extends AppShell {
 					'short' => 'r',
 					'help' => __d('cake_console', 'Resource'),
 					'default' => '',
+				),
+				'reviewed-only' => array(
+					'help' => __d('cake_console', 'Only reviewed translations'),
+					'boolean' => true,
 				),
 				'plugin' => array(
 					'short' => 'p',
