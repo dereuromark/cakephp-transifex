@@ -1,5 +1,7 @@
 <?php
 
+App::uses('HttpSocket', 'Network/Http');
+
 class TransifexLib {
 
 	const BASE_URL = 'https://www.transifex.com/api/2/';
@@ -19,10 +21,6 @@ class TransifexLib {
 		}
 		if (empty($this->settings['user']) || empty($this->settings['password'])) {
 			throw new RuntimeException('Credentials missing');
-		}
-
-		if (!function_exists('curl_init')) {
-			throw new RuntimeException('cURL needs to be installed/enabled');
 		}
 	}
 
@@ -109,16 +107,15 @@ class TransifexLib {
 	 * @return array
 	 */
 	protected function _get($url) {
-		$url = 'curl --silent --user {user}:{password} -X GET ' . $url;
-		$url = String::insert($url, $this->settings, array('before' => '{', 'after' => '}'));
+		$socket = new HttpSocket();
+		$socket->configAuth('Basic', $this->settings['user'], $this->settings['password']);
 
-		exec($url, $output, $ret);
-		if ($output[0] !== '{' && $output[0] !== '[') {
-			throw new RuntimeException($output[0]);
-			return array();
+		$url = String::insert($url, $this->settings, array('before' => '{', 'after' => '}'));
+		$response = $socket->get($url);
+		if (!$response->isOk()) {
+			throw new RuntimeException('Unable to retrieve data from API');
 		}
-		$output = json_decode(implode("\n", $output), true);
-		return $output;
+		return json_decode($response->body(), true);
 	}
 
 }
