@@ -36,20 +36,28 @@ A shortcut to import a specific language for a specific resource, you can also u
 
 	cake Transifex.Transifex pull -l {language} -r {resource}
 
-Tip: If you want to dry-run it first, use `-d -v`. This will not modify your locale files but simulate the import.
+
 
 The PO files will be stored in `APP/Locale/{locale}/LC_MESSAGES/{resource}.po`.
 Using subversion or git is highly reocmmended to quickly overview and confirm the changes made.
 
 ### Advanced usage
 
+You can only pull reviewed translations using `--reviewed-only`:
+
+	cake Transifex.Transifex pull --reviewed-only
+
 To pull locales for a plugin you need to set `--plugin` or `-p`:
 
 	cake Transifex.Transifex pull -p Tools
 
+They will then be stored in the Plugin Locale folder.
+
 If you happen to have one primary project and several other (plugin/cakecore) projects, you can overwrite the config project setting using `--project` or `-o`:
 
 	cake Transifex.Transifex pull -o cakephp
+
+Tip: If you want to dry-run it first, use `-d -v`. This will not modify your locale files but simulate the import.
 
 ## Disclaimer
 License: MIT

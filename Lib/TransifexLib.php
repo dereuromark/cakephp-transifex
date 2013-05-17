@@ -1,5 +1,5 @@
 <?php
-
+App::uses('String', 'Utility');
 App::uses('HttpSocket', 'Network/Http');
 
 class TransifexLib {
