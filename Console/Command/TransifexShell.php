@@ -165,10 +165,7 @@ class TransifexShell extends AppShell {
 						$this->exit(__('Cannot create new Locale folder %s', str_replace(APP, DS, $dir)));
 					}
 				}
-				if (!empty($this->params['dry-run'])) {
-					continue;
-				}
-				if (!file_put_contents($file, $translations['content'])) {
+				if (empty($this->params['dry-run']) && !file_put_contents($file, $translations['content'])) {
 					$this->error(__('Could not store translation content into PO file.'));
 				}
 				$count++;
