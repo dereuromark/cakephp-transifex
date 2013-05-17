@@ -183,7 +183,7 @@ class TransifexShell extends AppShell {
 		$subcommandParser = array(
 			'options' => array(
 				'project' => array(
-					'short' => 'o',
+					'short' => 'P',
 					'help' => __d('cake_console', 'Project'),
 					'default' => '',
 				),
@@ -198,6 +198,7 @@ class TransifexShell extends AppShell {
 					'default' => '',
 				),
 				'reviewed-only' => array(
+					'short' => 'R',
 					'help' => __d('cake_console', 'Only reviewed translations'),
 					'boolean' => true,
 				),

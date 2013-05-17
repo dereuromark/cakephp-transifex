@@ -43,9 +43,9 @@ Using subversion or git is highly reocmmended to quickly overview and confirm th
 
 ### Advanced usage
 
-You can only pull reviewed translations using `--reviewed-only`:
+You can only pull reviewed translations using `--reviewed-only` or `-R`:
 
-	cake Transifex.Transifex pull --reviewed-only
+	cake Transifex.Transifex pull -R
 
 To pull locales for a plugin you need to set `--plugin` or `-p`:
 
@@ -53,9 +53,9 @@ To pull locales for a plugin you need to set `--plugin` or `-p`:
 
 They will then be stored in the Plugin Locale folder.
 
-If you happen to have one primary project and several other (plugin/cakecore) projects, you can overwrite the config project setting using `--project` or `-o`:
+If you happen to have one primary project and several other (plugin/cakecore) projects, you can overwrite the config project setting using `--project` or `-P`:
 
-	cake Transifex.Transifex pull -o cakephp
+	cake Transifex.Transifex pull -P cakephp
 
 Tip: If you want to dry-run it first, use `-d -v`. This will not modify your locale files but simulate the import.
 
