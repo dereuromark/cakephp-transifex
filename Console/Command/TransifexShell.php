@@ -55,6 +55,7 @@ class TransifexShell extends AppShell {
 	 * @return void
 	 */
 	public function pull() {
+		$l10n = new L10n();
 		$options = $availableLanguages = $this->_languages();
 		$options[] = '*';
 
@@ -100,10 +101,17 @@ class TransifexShell extends AppShell {
 					$this->err(' - no PO file for ' . $language . ' and ' . $resource);
 					continue;
 				}
-				$L10n = new L10n();
-				$locale = $L10n->map($language);
-				if (!$locale) {
-					$locale = $language;
+
+				$locale = $language;
+				$catalog = $l10n->catalog(strtolower(str_replace('_', '-', $language)));
+				if (!empty($catalog['locale'])) {
+					$locale = $catalog['locale'];
+				} elseif (strpos($language, '_')) {
+					list($languagePrefix) = explode('_', $language);
+					$catalog = $l10n->catalog($languagePrefix);
+					if (!empty($catalog['locale'])) {
+						$locale = $catalog['locale'];
+					}
 				}
 
 				$path = !empty($this->params['plugin']) ? CakePlugin::path($this->params['plugin']) : APP;
