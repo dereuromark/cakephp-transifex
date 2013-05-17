@@ -259,7 +259,11 @@ class TransifexShell extends AppShell {
 					'help' => __d('cake_console', 'Project'),
 					'default' => '',
 				),
-				'language' => array(
+			)
+		);
+		$subcommandParserPull = $subcommandParser;
+		$subcommandParserPull['options'] += array(
+			'language' => array(
 					'short' => 'l',
 					'help' => __d('cake_console', 'Language'),
 					'default' => ''
@@ -284,23 +288,25 @@ class TransifexShell extends AppShell {
 					'help' => __d('cake_console', 'Dry run the command, no files will actually be modified. Should be combined with verbose!'),
 					'boolean' => true
 				),
-			)
 		);
 
 		return parent::getOptionParser()
 			->description(__d('cake_console', "The Convert Shell converts files from dos/unix/mac to another system"))
 			->addSubcommand('resources', array(
 				'help' => __d('cake_console', 'List all resources'),
+				'parser' => $subcommandParser
 			))
 			->addSubcommand('languages', array(
 				'help' => __d('cake_console', 'List all languages'),
+				'parser' => $subcommandParser
 			))
 			->addSubcommand('statistics', array(
 				'help' => __d('cake_console', 'Display project statistics'),
+				'parser' => $subcommandParser
 			))
 			->addSubcommand('pull', array(
 				'help' => __d('cake_console', 'Pull PO files'),
-				'parser' => $subcommandParser
+				'parser' => $subcommandParserPull
 			));
 	}
 
