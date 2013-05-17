@@ -10,6 +10,8 @@ Installing the Plugin is pretty much as with every other CakePHP Plugin.
 * Put the files in `APP/Plugin/Transifex`
 * Make sure you have `CakePlugin::load('Transifex')` or `CakePlugin::loadAll()` in your bootstrap
 
+Create an account at transifex.com and create/join a project and resources.
+
 Put the information regarding project, user and password in your config file or your bootstrap
 
 	$config['Transifex'] = array('project' => 'cakephp', 'user' => '...', 'password' => '...');
