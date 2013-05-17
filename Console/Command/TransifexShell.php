@@ -63,6 +63,8 @@ class TransifexShell extends AppShell {
 	 * @return void
 	 */
 	public function statistics() {
+		$this->out('Project: ' . $this->Transifex->settings['project'], 2);
+
 		$resource = $language = null;
 		if (!empty($this->args[0])) {
 			$resource = $this->args[0];
