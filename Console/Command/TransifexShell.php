@@ -3,7 +3,8 @@ App::uses('AppShell', 'Console/Command');
 App::uses('TransifexLib', 'Transifex.Lib');
 
 /**
- * Wrapper to get Transifex information and import translation PO files
+ * Wrapper to get Transifex information and import translation PO files.
+ * Use verbose output to display more detailed information.
  *
  * @version 1.0
  * @cakephp 2.x
@@ -73,6 +74,7 @@ class TransifexShell extends AppShell {
 			$language = $this->args[1];
 		}
 		if (empty($resource)) {
+			//TODO: prompt for resource here
 			$this->error('Please provide a resource - and optionally a language.');
 		}
 
