@@ -2,7 +2,7 @@
 
 A Cake2.x Plugin that works with Transifex and pulls translations.
 
-Please note: New functionality has been tested against cake2.3 only. Please upgrade if possible.
+Please note: New functionality has been tested against CakePHP v2.3 only. Please upgrade if possible.
 
 ## Installation
 Installing the Plugin is pretty much as with every other CakePHP Plugin.
@@ -39,11 +39,11 @@ A shortcut to import a specific language for a specific resource, you can also u
 
 
 The PO files will be stored in `APP/Locale/{locale}/LC_MESSAGES/{resource}.po`.
-Using subversion or git is highly reocmmended to quickly overview and confirm the changes made.
+Using subversion or git is highly recommended to quickly overview and confirm the changes made.
 
 ### Advanced usage
 
-You can only pull reviewed translations using `--reviewed-only` or `-R`:
+You can pull reviewed translations only using `--reviewed-only` or `-R`:
 
 	cake Transifex.Transifex pull -R
 
@@ -53,7 +53,7 @@ To pull locales for a plugin you need to set `--plugin` or `-p`:
 
 They will then be stored in the Plugin Locale folder.
 
-If you happen to have one primary project and several other (plugin/cakecore) projects, you can overwrite the config project setting using `--project` or `-P`:
+If you happen to have one primary project and several other (plugin or CakePHP core) projects, you can overwrite the config project setting using `--project` or `-P`:
 
 	cake Transifex.Transifex pull -P cakephp
 
