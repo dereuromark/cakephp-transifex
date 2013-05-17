@@ -33,7 +33,8 @@ class TransifexShell extends AppShell {
 	public function resources() {
 		$resources = $this->Transifex->getResources();
 		foreach ($resources as $resource) {
-			$this->out(' - ' . $resource['slug'] . ' ('.$resource['i18n_type'].')');
+			$this->out(' - ' . $resource['slug'] . ' (' . $resource['i18n_type'] . ')');
+			$this->out('   source language code: ' . $resource['source_language_code'], 1, Shell::VERBOSE);
 		}
 	}
 
@@ -50,6 +51,9 @@ class TransifexShell extends AppShell {
 				$language .= ' | ' . $res['language'];
 			}
 			$this->out(' - ' . $language);
+			if (!empty($res['locale'])) {
+				$this->out('   locale: ' . $res['locale'], 1, Shell::VERBOSE);
+			}
 		}
 	}
 
@@ -106,6 +110,7 @@ class TransifexShell extends AppShell {
 			$approvedOnly = $this->params['reviewed-only'];
 		}
 
+		$count = 0;
 		foreach ($languages as $language) {
 			foreach ($resources as $resource) {
 				$this->out(__('Generating PO file for ' . $language . ' and ' . $resource), 1, Shell::VERBOSE);
@@ -123,7 +128,7 @@ class TransifexShell extends AppShell {
 				$dir = dirname($file);
 				if (!is_dir($dir)) {
 					if (!mkdir($dir, 0770, true)) {
-						$this->exit(__('Cannot create new Locale folder %s', str_replace(APP, '/', $dir)));
+						$this->exit(__('Cannot create new Locale folder %s', str_replace(APP, DS, $dir)));
 					}
 				}
 				if (!empty($this->params['dry-run'])) {
@@ -132,10 +137,12 @@ class TransifexShell extends AppShell {
 				if (!file_put_contents($file, $translations['content'])) {
 					$this->error(__('Could not store translation content into PO file.'));
 				}
+				$count++;
+				$this->out(__('PO file %s generated', str_replace(APP, DS, $file)), 1, Shell::VERBOSE);
 			}
 		}
 
-		$this->out('...done');
+		$this->out('... Done! ' . $count . ' PO file(s) generated.');
 	}
 
 	/**
