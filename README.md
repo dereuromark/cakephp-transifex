@@ -28,6 +28,10 @@ To get a list of supported languages:
 
 	cake Transifex.Transifex languages
 
+Statistics for a resource can be garthered using
+
+	cake Transifex.Transifex statistics
+
 To actually update your Locale folder, use
 
 	cake Transifex.Transifex pull
