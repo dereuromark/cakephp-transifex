@@ -1,11 +1,10 @@
 <?php
 App::uses('TransifexLib', 'Transifex.Lib');
-App::uses('MyCakeTestCase', 'Tools.TestSuite');
 
 /**
  *
  */
-class TransifexLibTest extends MyCakeTestCase {
+class TransifexLibTest extends CakeTestCase {
 
 	public $Transifex = null;
 
