@@ -65,6 +65,11 @@ If you happen to have one primary project and several other (plugin or CakePHP c
 
 Tip: If you want to dry-run it first, use `-d -v`. This will not modify your locale files but simulate the import.
 
+## TODO
+
+* Use __d() to translate
+* More tests
+
 ## Disclaimer
 License: MIT
 
