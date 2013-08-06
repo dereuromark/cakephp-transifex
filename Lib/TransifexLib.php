@@ -12,6 +12,13 @@ class TransifexLib {
 		'password' => '',
 	);
 
+	/**
+	 * TransifexLib::__construct()
+	 *
+	 * @param array $settings
+	 * @return void
+	 * @throws RuntimeException Exception.
+	 */
 	public function __construct($settings = array()) {
 		$configSettings = (array)Configure::read('Transifex');
 		$this->settings = array_merge($this->settings, $configSettings, $settings);
@@ -30,7 +37,7 @@ class TransifexLib {
 	 * @return array
 	 */
 	public function getProject() {
-		$url = self::BASE_URL.'project/{project}/?details';
+		$url = self::BASE_URL . 'project/{project}/?details';
 		return $this->_get($url);
 	}
 
@@ -40,7 +47,7 @@ class TransifexLib {
 	 * @return array
 	 */
 	public function getResources() {
-		$url = self::BASE_URL.'project/{project}/resources/';
+		$url = self::BASE_URL . 'project/{project}/resources/';
 		return $this->_get($url);
 	}
 
@@ -54,7 +61,7 @@ class TransifexLib {
 		if ($resource) {
 			$resource .= '/';
 		}
-		$url = self::BASE_URL.'project/{project}/resource/' . $resource;
+		$url = self::BASE_URL . 'project/{project}/resource/' . $resource;
 		return $this->_get($url);
 	}
 
@@ -65,7 +72,7 @@ class TransifexLib {
 	 * @return array
 	 */
 	public function getLanguages() {
-		$url = self::BASE_URL.'project/{project}/languages/';
+		$url = self::BASE_URL . 'project/{project}/languages/';
 		return $this->_get($url);
 	}
 
@@ -76,7 +83,7 @@ class TransifexLib {
 	 * @return array
 	 */
 	public function getLanguage($language) {
-		$url = self::BASE_URL.'project/{project}/language/'.$language.'/?details';
+		$url = self::BASE_URL . 'project/{project}/language/' . $language . '/?details';
 		return $this->_get($url);
 	}
 
@@ -89,7 +96,7 @@ class TransifexLib {
 	 * @return array
 	 */
 	public function getTranslations($resource, $language, $reviewedOnly = false) {
-		$url = self::BASE_URL.'project/{project}/resource/'.$resource.'/translation/'.$language.'/';
+		$url = self::BASE_URL . 'project/{project}/resource/' . $resource . '/translation/' . $language . '/';
 		if ($reviewedOnly) {
 			$url .= '?mode=reviewed';
 		}
@@ -116,6 +123,7 @@ class TransifexLib {
 	 *
 	 * @param string $url
 	 * @return array
+	 * @throws RuntimeException Exception.
 	 */
 	protected function _get($url) {
 		$Socket = new HttpSocket();
