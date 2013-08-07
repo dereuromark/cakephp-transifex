@@ -85,7 +85,7 @@ class TransifexShell extends AppShell {
 
 		foreach ($stats as $language => $stat) {
 			$this->out('*** ' . $language . ' ***');
-			$translated =  $stat['translated_entities'];
+			$translated = $stat['translated_entities'];
 			$total = $stat['translated_entities'] + $stat['untranslated_entities'];
 			$this->out('Translated: ' . $stat['completed'] . ' (' . $translated . ' of ' . $total . ')');
 
@@ -282,7 +282,7 @@ class TransifexShell extends AppShell {
 					'help' => __d('cake_console', 'Plugin'),
 					'default' => ''
 				),
-				'dry-run'=> array(
+				'dry-run' => array(
 					'short' => 'd',
 					'help' => __d('cake_console', 'Dry run the command, no files will actually be modified. Should be combined with verbose!'),
 					'boolean' => true
