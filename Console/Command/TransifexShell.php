@@ -10,7 +10,6 @@ App::uses('TransifexLib', 'Transifex.Lib');
  * @cakephp 2.x
  * @author Mark Scherer
  * @license MIT
- * 2013-05-16 ms
  */
 class TransifexShell extends AppShell {
 

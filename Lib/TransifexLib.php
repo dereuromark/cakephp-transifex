@@ -2,6 +2,12 @@
 App::uses('String', 'Utility');
 App::uses('HttpSocket', 'Network/Http');
 
+/**
+ * Transifex API wrapper class.
+ *
+ * @license MIT
+ * @author Mark Scherer
+ */
 class TransifexLib {
 
 	const BASE_URL = 'https://www.transifex.com/api/2/';
