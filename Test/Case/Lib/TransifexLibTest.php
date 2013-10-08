@@ -11,6 +11,8 @@ class TransifexLibTest extends CakeTestCase {
 	public function setUp() {
 		parent::setUp();
 
+		$this->skipIf(!Configure::read('Transifex.user'));
+
 		$settings = array(
 			'project' => 'cakephp',
 		);
