@@ -22,7 +22,6 @@ class TransifexLib {
 	 * TransifexLib::__construct()
 	 *
 	 * @param array $settings
-	 * @return void
 	 * @throws RuntimeException Exception.
 	 */
 	public function __construct($settings = array()) {
