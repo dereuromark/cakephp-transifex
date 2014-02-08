@@ -2,7 +2,7 @@
 	"name": "dereuromark/cakephp-transifex",
 	"type": "cakephp-plugin",
 	"description": "The Transifex plugin allows you to pull translations from Transifex Translation API.",
-	"homepage": "http://github.com/dereuromark/transifex",
+	"homepage": "http://github.com/dereuromark/cakephp-transifex",
 	"license": "MIT",
 	"authors": [
 		{
@@ -15,7 +15,7 @@
 		"composer/installers": "*"
 	},
 	"support": {
-		"source": "https://github.com/dereuromark/transifex"
+		"source": "https://github.com/dereuromark/cakephp-transifex"
 	},
 	"extra": {
 		"installer-paths": {
