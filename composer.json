@@ -1,5 +1,5 @@
 {
-	"name": "dereuromark/transifex",
+	"name": "dereuromark/cakephp-transifex",
 	"type": "cakephp-plugin",
 	"description": "The Transifex plugin allows you to pull translations from Transifex Translation API.",
 	"homepage": "http://github.com/dereuromark/transifex",
@@ -19,7 +19,7 @@
 	},
 	"extra": {
 		"installer-paths": {
-			"Plugin/Transifex/": ["dereuromark/transifex"]
+			"Plugin/Transifex/": ["dereuromark/cakephp-transifex"]
 		}
 	}
 }
