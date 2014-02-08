@@ -2,6 +2,12 @@
 App::uses('String', 'Utility');
 App::uses('HttpSocket', 'Network/Http');
 
+/**
+ * Transifex API wrapper class.
+ *
+ * @license MIT
+ * @author Mark Scherer
+ */
 class TransifexLib {
 
 	const BASE_URL = 'https://www.transifex.com/api/2/';
@@ -16,7 +22,6 @@ class TransifexLib {
 	 * TransifexLib::__construct()
 	 *
 	 * @param array $settings
-	 * @return void
 	 * @throws RuntimeException Exception.
 	 */
 	public function __construct($settings = array()) {

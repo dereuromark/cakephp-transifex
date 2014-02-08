@@ -1,9 +1,7 @@
 <?php
-
 App::uses('TransifexShell', 'Transifex.Console/Command');
-App::uses('MyCakeTestCase', 'Tools.TestSuite');
 
-class TransifexShellTest extends MyCakeTestCase {
+class TransifexShellTest extends CakeTestCase {
 
 	public $TransifexShell;
 

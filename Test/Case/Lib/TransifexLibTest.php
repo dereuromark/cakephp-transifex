@@ -1,16 +1,17 @@
 <?php
 App::uses('TransifexLib', 'Transifex.Lib');
-App::uses('MyCakeTestCase', 'Tools.TestSuite');
 
 /**
  *
  */
-class TransifexLibTest extends MyCakeTestCase {
+class TransifexLibTest extends CakeTestCase {
 
 	public $Transifex = null;
 
 	public function setUp() {
 		parent::setUp();
+
+		$this->skipIf(!Configure::read('Transifex.user'));
 
 		$settings = array(
 			'project' => 'cakephp',

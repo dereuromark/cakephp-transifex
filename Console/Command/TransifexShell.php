@@ -10,7 +10,6 @@ App::uses('TransifexLib', 'Transifex.Lib');
  * @cakephp 2.x
  * @author Mark Scherer
  * @license MIT
- * 2013-05-16 ms
  */
 class TransifexShell extends AppShell {
 
@@ -75,7 +74,7 @@ class TransifexShell extends AppShell {
 		}
 		if (empty($resource)) {
 			//TODO: prompt for resource here
-			$this->error('Please provide a resource - and optionally a language.');
+			return $this->error('Please provide a resource - and optionally a language.');
 		}
 
 		$stats = $this->Transifex->getStats($resource, $language);
@@ -111,7 +110,7 @@ class TransifexShell extends AppShell {
 			$questioning = true;
 		}
 		if (!in_array($language, $options, true)) {
-			$this->error('No such language');
+			return $this->error('No such language');
 		}
 
 		if ($language === '*') {
@@ -130,7 +129,7 @@ class TransifexShell extends AppShell {
 			$questioning = true;
 		}
 		if (!in_array($resource, $options, true)) {
-			$this->error('No such resource');
+			return $this->error('No such resource');
 		}
 
 		if ($resource === '*') {
@@ -168,7 +167,7 @@ class TransifexShell extends AppShell {
 					}
 				}
 				if (empty($this->params['dry-run']) && !file_put_contents($file, $translations['content'])) {
-					$this->error(__('Could not store translation content into PO file.'));
+					return $this->error(__('Could not store translation content into PO file.'));
 				}
 				$count++;
 				$this->out(__('PO file %s generated', str_replace(APP, DS, $file)), 1, Shell::VERBOSE);
@@ -239,7 +238,7 @@ class TransifexShell extends AppShell {
 	protected function _languages() {
 		$translations = $this->Transifex->getProject();
 		if (!isset($translations['teams'])) {
-			$this->error('No such project');
+			return $this->error('No such project');
 		}
 		sort($translations['teams']);
 		return $translations['teams'];
