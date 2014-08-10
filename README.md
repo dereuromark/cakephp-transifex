@@ -1,4 +1,5 @@
-# CakePHP Transifex Plugin
+# CakePHP Transifex Plugin [![Build Status](https://api.travis-ci.org/dereuromark/cakephp-transifex.png)](https://travis-ci.org/dereuromark/cakephp-transifex)
+
 
 A Cake2.x Plugin that works with Transifex and pulls translations.
 
