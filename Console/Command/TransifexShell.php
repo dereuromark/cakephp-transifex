@@ -163,7 +163,7 @@ class TransifexShell extends AppShell {
 				$dir = dirname($file);
 				if (!is_dir($dir)) {
 					if (!mkdir($dir, 0770, true)) {
-						$this->exit(__('Cannot create new Locale folder %s', str_replace(APP, DS, $dir)));
+						return $this->error(__('Cannot create new Locale folder %s', str_replace(APP, DS, $dir)));
 					}
 				}
 				if (empty($this->params['dry-run']) && !file_put_contents($file, $translations['content'])) {
@@ -175,6 +175,125 @@ class TransifexShell extends AppShell {
 		}
 
 		$this->out('... Done! ' . $count . ' PO file(s) generated.');
+	}
+
+	/**
+	 * TransifexShell::push()
+	 *
+	 * @return void
+	 * @author Gustav Wellner Bou <wellner@solutica.de>
+	 */
+	public function push() {
+		$options = $availableLanguages = $this->_languages();
+		$options[] = '*';
+
+		$questioning = false;
+
+		if (!empty($this->params['language'])) {
+			$language = $this->params['language'];
+		} else {
+			$language = $this->in('Language', $options, '*');
+			$questioning = true;
+		}
+		if (!in_array($language, $options, true)) {
+			return $this->error('No such language');
+		}
+
+		if ($language === '*') {
+			$languages = $availableLanguages;
+		} else {
+			$languages = (array)$language;
+		}
+
+		$options = $availableResources = $this->_resources();
+		$options[] = '*';
+
+		if (!empty($this->params['resource'])) {
+			$resource = $this->params['resource'];
+		} else {
+			$resource = $this->in('Resource', $options, '*');
+			$questioning = true;
+		}
+		if (!in_array($resource, $options, true)) {
+			return $this->error('No such resource');
+		}
+
+		if ($resource === '*') {
+			$resources = $availableResources;
+		} else {
+			$resources = (array)$resource;
+		}
+
+		$count = 0;
+		foreach ($languages as $language) {
+			foreach ($resources as $resource) {
+				$this->out('Submitting PO file for ' . $language . ' and ' . $resource, 1, Shell::NORMAL);
+
+				$locale = $this->_getLocale($language);
+
+				$path = !empty($this->params['plugin']) ? CakePlugin::path($this->params['plugin']) : APP;
+				$file = $path . 'Locale' . DS . $locale . DS . 'LC_MESSAGES' . DS . $resource . '.po';
+				$dir = dirname($file);
+				if (!is_file($file)) {
+					$this->error(sprintf('PO file not found: %s', str_replace(APP, DS, $file)));
+				}
+				if (empty($this->params['dry-run']) && !$this->Transifex->putTranslations($resource, $language, $file)) {
+					return $this->error('Could not submit translation.');
+				}
+
+				$count++;
+				$this->out(sprintf('PO file %s submitted', str_replace(APP, DS, $file)), 1, Shell::NORMAL);
+			}
+		}
+
+		$this->out('... Done! ' . $count . ' PO file(s) pushed.');
+	}
+
+	/**
+	 * TransifexShell::update()
+	 *
+	 * @return void
+	 * @author Gustav Wellner Bou <wellner@solutica.de>
+	 */
+	public function update() {
+		$options = $availableResources = $this->_resources();
+		$options[] = '*';
+
+		if (!empty($this->params['resource'])) {
+			$resource = $this->params['resource'];
+		} else {
+			$resource = $this->in('Resource', $options, '*');
+			$questioning = true;
+		}
+		if (!in_array($resource, $options, true)) {
+			return $this->error('No such resource');
+		}
+
+		if ($resource === '*') {
+			$resources = $availableResources;
+		} else {
+			$resources = (array)$resource;
+		}
+
+		$count = 0;
+			foreach ($resources as $resource) {
+				$this->out('Submitting POT file for resource ' . $resource, 1, Shell::NORMAL);
+
+				$path = !empty($this->params['plugin']) ? CakePlugin::path($this->params['plugin']) : APP;
+				$file = $path . 'Locale' . DS . $resource . '.pot';
+				$dir = dirname($file);
+				if (!is_file($file)) {
+					$this->error(sprintf('POT file not found: %s', str_replace(APP, DS, $file)));
+				}
+				if (empty($this->params['dry-run']) && !$this->Transifex->putResource($resource, $file)) {
+					return $this->error('Could not submit catalog.');
+				}
+
+				$count++;
+				$this->out(sprintf('POT file %s submitted', str_replace(APP, DS, $file)), 1, Shell::NORMAL);
+			}
+
+		$this->out('... Done! ' . $count . ' POT file(s) pushed.');
 	}
 
 	/**
@@ -305,7 +424,14 @@ class TransifexShell extends AppShell {
 			->addSubcommand('pull', array(
 				'help' => __d('cake_console', 'Pull PO files'),
 				'parser' => $subcommandParserPull
+			))->addSubcommand('push', array(
+				'help' => __d('cake_console', 'Push PO files'),
+				'parser' => $subcommandParserPull
+			))->addSubcommand('update', array(
+				'help' => __d('cake_console', 'Push POT files'),
+				'parser' => $subcommandParserPull
 			));
+
 	}
 
 }

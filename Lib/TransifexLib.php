@@ -1,6 +1,7 @@
 <?php
 App::uses('String', 'Utility');
 App::uses('HttpSocket', 'Network/Http');
+App::uses('I18n', 'I18n');
 
 /**
  * Transifex API wrapper class.
@@ -109,6 +110,86 @@ class TransifexLib {
 	}
 
 	/**
+	 * TransifexLib::putTranslations()
+	 *
+	 * @param $resource
+	 * @param $language
+	 * @param $file
+	 * @return mixed
+	 * @author Gustav Wellner Bou <wellner@solutica.de>
+	 */
+	public function putTranslations($resource, $language, $file) {
+		$url = self::BASE_URL . 'project/{project}/resource/' . $resource . '/translation/' . $language;
+		if(function_exists('curl_file_create') && function_exists('mime_content_type')) {
+			$body = array('file' => curl_file_create($file, mime_content_type($file), pathinfo($file, PATHINFO_BASENAME)));
+		} else {
+			$body = array('file' => '@' . $file);
+		}
+
+		try {
+			return $this->_put($url, $body);
+		} catch(RuntimeException $e) {
+			/* Handling a very specific exception due to a Transifex bug */
+
+			// Exception is thrown maybe just because the file only has empty translations
+			if(strpos($e->getMessage(), "We're not able to extract any string from the file uploaded for language") !== false)
+			{
+
+				$catalog = I18n::loadPo($file);
+
+				unset($catalog['']);
+
+				if(count($catalog))
+				{
+					if(count(array_filter($catalog)) == 0)
+					{
+						// PO file contains empty translations
+						// In that case Transifex throws an error although its not.
+
+						// Then we could just append one non empty translation to that file and send it again
+						// But apart from successfully sending this file again, it wont affect the remote translations
+						return array(
+							'strings_added' => 0,
+							'strings_updated' => 0,
+							'strings_delete' => 0,
+						);
+					}
+					else
+					{
+						throw new RuntimeException(sprintf('Could not extract any string from %s. Whereas file contains non-empty translation(s) for following key(s): %s.', $file, '"' . implode('", "', array_keys(array_filter($catalog))) . '"'));
+					}
+				}
+				else {
+					throw new RuntimeException(sprintf('Could not extract any string from %s. File seems empty.', $file));
+				}
+
+			}
+			else
+			{
+				throw $e;
+			}
+		}
+	}
+
+	/**
+	 * TransifexLib::putResource()
+	 *
+	 * @param $resource
+	 * @param $file
+	 * @return mixed
+	 * @author Gustav Wellner Bou <wellner@solutica.de>
+	 */
+	public function putResource($resource, $file) {
+		$url = self::BASE_URL . 'project/{project}/resource/' . $resource . '/content';
+		if(function_exists('curl_file_create'))
+			$body = array('file' => curl_file_create($file, mime_content_type($file), pathinfo($file, PATHINFO_BASENAME)));
+		else
+			$body = array('file' => '@'.$file);
+
+		return $this->_put($url, $body);
+	}
+
+	/**
 	 * TransifexLib::getStats()
 	 *
 	 * @param string $resource
@@ -140,6 +221,41 @@ class TransifexLib {
 			throw new RuntimeException('Unable to retrieve data from API');
 		}
 		return json_decode($response->body(), true);
+	}
+
+	/**
+	 * TransifexLib::_put()
+	 *
+	 * @param $url
+	 * @param $data
+	 * @throws RuntimeException
+	 * @internal param $post
+	 * @return mixed
+	 * @author   Gustav Wellner Bou <wellner@solutica.de>
+	 */
+	protected function _put($url, $data) {
+		$error = false;
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, String::insert($url, $this->settings, array('before' => '{', 'after' => '}')));
+		curl_setopt($ch, CURLOPT_USERPWD, $this->settings['user'] . ":" . $this->settings['password']);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$result=curl_exec ($ch);
+		$info = curl_getinfo($ch);
+
+		if(curl_error($ch) || (int)$info['http_code'] !== 200) {
+			$error = true;
+		}
+
+		curl_close ($ch);
+
+		if ($error) {
+			throw new RuntimeException('Unable to send data to API (' . $result . ')');
+		}
+
+		return json_decode($result, true);
 	}
 
 }
