@@ -431,7 +431,6 @@ class TransifexShell extends AppShell {
 				'help' => __d('cake_console', 'Push POT files'),
 				'parser' => $subcommandParserPull
 			));
-
 	}
 
 }
