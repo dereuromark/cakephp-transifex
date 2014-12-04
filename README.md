@@ -3,7 +3,7 @@
 
 A CakePHP 2.x Plugin that works with Transifex and pulls translations.
 
-Please note: New functionality has been tested against CakePHP v2.3 only. Please upgrade if possible.
+Please note: New functionality has been tested against latest CakePHP v2.x only. Please upgrade if possible.
 
 ## Installation
 Installing the Plugin is pretty much as with every other CakePHP Plugin.
