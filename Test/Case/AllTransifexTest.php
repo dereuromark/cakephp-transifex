@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Group test - Transifex
  */

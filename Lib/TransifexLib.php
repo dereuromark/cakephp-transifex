@@ -43,7 +43,7 @@ class TransifexLib {
 	 * @return array
 	 */
 	public function getProject() {
-		$url = self::BASE_URL . 'project/{project}/?details';
+		$url = static::BASE_URL . 'project/{project}/?details';
 		return $this->_get($url);
 	}
 
@@ -53,7 +53,7 @@ class TransifexLib {
 	 * @return array
 	 */
 	public function getResources() {
-		$url = self::BASE_URL . 'project/{project}/resources/';
+		$url = static::BASE_URL . 'project/{project}/resources/';
 		return $this->_get($url);
 	}
 
@@ -67,7 +67,7 @@ class TransifexLib {
 		if ($resource) {
 			$resource .= '/';
 		}
-		$url = self::BASE_URL . 'project/{project}/resource/' . $resource;
+		$url = static::BASE_URL . 'project/{project}/resource/' . $resource;
 		return $this->_get($url);
 	}
 
@@ -78,7 +78,7 @@ class TransifexLib {
 	 * @return array
 	 */
 	public function getLanguages() {
-		$url = self::BASE_URL . 'project/{project}/languages/';
+		$url = static::BASE_URL . 'project/{project}/languages/';
 		return $this->_get($url);
 	}
 
@@ -89,7 +89,7 @@ class TransifexLib {
 	 * @return array
 	 */
 	public function getLanguage($language) {
-		$url = self::BASE_URL . 'project/{project}/language/' . $language . '/?details';
+		$url = static::BASE_URL . 'project/{project}/language/' . $language . '/?details';
 		return $this->_get($url);
 	}
 
@@ -98,11 +98,11 @@ class TransifexLib {
 	 *
 	 * @param mixed $resource
 	 * @param mixed $language
-	 * @param boolean $reviewedOnly
+	 * @param bool $reviewedOnly
 	 * @return array
 	 */
 	public function getTranslations($resource, $language, $reviewedOnly = false) {
-		$url = self::BASE_URL . 'project/{project}/resource/' . $resource . '/translation/' . $language . '/';
+		$url = static::BASE_URL . 'project/{project}/resource/' . $resource . '/translation/' . $language . '/';
 		if ($reviewedOnly) {
 			$url .= '?mode=reviewed';
 		}
@@ -119,8 +119,8 @@ class TransifexLib {
 	 * @author Gustav Wellner Bou <wellner@solutica.de>
 	 */
 	public function putTranslations($resource, $language, $file) {
-		$url = self::BASE_URL . 'project/{project}/resource/' . $resource . '/translation/' . $language;
-		if(function_exists('curl_file_create') && function_exists('mime_content_type')) {
+		$url = static::BASE_URL . 'project/{project}/resource/' . $resource . '/translation/' . $language;
+		if (function_exists('curl_file_create') && function_exists('mime_content_type')) {
 			$body = array('file' => curl_file_create($file, mime_content_type($file), pathinfo($file, PATHINFO_BASENAME)));
 		} else {
 			$body = array('file' => '@' . $file);
@@ -180,11 +180,12 @@ class TransifexLib {
 	 * @author Gustav Wellner Bou <wellner@solutica.de>
 	 */
 	public function putResource($resource, $file) {
-		$url = self::BASE_URL . 'project/{project}/resource/' . $resource . '/content';
-		if(function_exists('curl_file_create'))
+		$url = static::BASE_URL . 'project/{project}/resource/' . $resource . '/content';
+		if(function_exists('curl_file_create')) { 
 			$body = array('file' => curl_file_create($file, mime_content_type($file), pathinfo($file, PATHINFO_BASENAME)));
-		else
-			$body = array('file' => '@'.$file);
+		} else { 
+			$body = array('file' => '@' . $file);
+		}
 
 		return $this->_put($url, $body);
 	}
@@ -200,7 +201,7 @@ class TransifexLib {
 		if ($language) {
 			$language .= '/';
 		}
-		$url = self::BASE_URL . 'project/{project}/resource/' . $resource . '/stats/' . $language;
+		$url = static::BASE_URL . 'project/{project}/resource/' . $resource . '/stats/' . $language;
 		return $this->_get($url);
 	}
 
@@ -242,14 +243,14 @@ class TransifexLib {
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		$result=curl_exec ($ch);
+		$result = curl_exec($ch);
 		$info = curl_getinfo($ch);
 
-		if(curl_error($ch) || (int)$info['http_code'] !== 200) {
+		if (curl_error($ch) || (int)$info['http_code'] !== 200) {
 			$error = true;
 		}
 
-		curl_close ($ch);
+		curl_close($ch);
 
 		if ($error) {
 			throw new RuntimeException('Unable to send data to API (' . $result . ')');
