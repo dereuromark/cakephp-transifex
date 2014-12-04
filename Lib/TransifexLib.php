@@ -132,17 +132,13 @@ class TransifexLib {
 			/* Handling a very specific exception due to a Transifex bug */
 
 			// Exception is thrown maybe just because the file only has empty translations
-			if(strpos($e->getMessage(), "We're not able to extract any string from the file uploaded for language") !== false)
-			{
+			if (strpos($e->getMessage(), "We're not able to extract any string from the file uploaded for language") !== false) {
 
 				$catalog = I18n::loadPo($file);
-
 				unset($catalog['']);
 
-				if(count($catalog))
-				{
-					if(count(array_filter($catalog)) == 0)
-					{
+				if (count($catalog)) {
+					if (count(array_filter($catalog)) === 0) {
 						// PO file contains empty translations
 						// In that case Transifex throws an error although its not.
 
@@ -153,19 +149,14 @@ class TransifexLib {
 							'strings_updated' => 0,
 							'strings_delete' => 0,
 						);
-					}
-					else
-					{
+					} else {
 						throw new RuntimeException(sprintf('Could not extract any string from %s. Whereas file contains non-empty translation(s) for following key(s): %s.', $file, '"' . implode('", "', array_keys(array_filter($catalog))) . '"'));
 					}
-				}
-				else {
+				} else {
 					throw new RuntimeException(sprintf('Could not extract any string from %s. File seems empty.', $file));
 				}
 
-			}
-			else
-			{
+			} else {
 				throw $e;
 			}
 		}
@@ -181,7 +172,7 @@ class TransifexLib {
 	 */
 	public function putResource($resource, $file) {
 		$url = static::BASE_URL . 'project/{project}/resource/' . $resource . '/content';
-		if(function_exists('curl_file_create')) { 
+		if (function_exists('curl_file_create')) {
 			$body = array('file' => curl_file_create($file, mime_content_type($file), pathinfo($file, PATHINFO_BASENAME)));
 		} else { 
 			$body = array('file' => '@' . $file);
