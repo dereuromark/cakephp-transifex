@@ -148,11 +148,11 @@ class TransifexShell extends AppShell {
 		$count = 0;
 		foreach ($languages as $language) {
 			foreach ($resources as $resource) {
-				$this->out(__('Generating PO file for ' . $language . ' and ' . $resource), 1, Shell::VERBOSE);
+				$this->out(sprintf('Generating PO file for %s and %s', $language, $resource), 1, Shell::VERBOSE);
 
 				$translations = $this->Transifex->getTranslations($resource, $language, $approvedOnly);
 				if (empty($translations['content'])) {
-					$this->err(' - no PO file for ' . $language . ' and ' . $resource);
+					$this->err(' - ' . sprintf('No PO file for %s and %s', $language, $resource));
 					continue;
 				}
 
@@ -163,14 +163,14 @@ class TransifexShell extends AppShell {
 				$dir = dirname($file);
 				if (!is_dir($dir)) {
 					if (!mkdir($dir, 0770, true)) {
-						return $this->error(__('Cannot create new Locale folder %s', str_replace(APP, DS, $dir)));
+						return $this->error(sprintf('Cannot create new Locale folder %s', str_replace(APP, DS, $dir)));
 					}
 				}
 				if (empty($this->params['dry-run']) && !file_put_contents($file, $translations['content'])) {
-					return $this->error(__('Could not store translation content into PO file.'));
+					return $this->error(sprintf('Could not store translation content into PO file (%s).', str_replace(APP, DS, $file)));
 				}
 				$count++;
-				$this->out(__('PO file %s generated', str_replace(APP, DS, $file)), 1, Shell::VERBOSE);
+				$this->out(sprintf('PO file %s generated', str_replace(APP, DS, $file)), 1, Shell::VERBOSE);
 			}
 		}
 
@@ -196,7 +196,7 @@ class TransifexShell extends AppShell {
 			$questioning = true;
 		}
 		if (!in_array($language, $options, true)) {
-			return $this->error('No such language');
+			return $this->error(sprintf('No such language \'%s\'.', $language));
 		}
 
 		if ($language === '*') {
@@ -215,7 +215,7 @@ class TransifexShell extends AppShell {
 			$questioning = true;
 		}
 		if (!in_array($resource, $options, true)) {
-			return $this->error('No such resource');
+			return $this->error(sprintf('No such resource \'%s\'.', $language));
 		}
 
 		if ($resource === '*') {
@@ -373,7 +373,7 @@ class TransifexShell extends AppShell {
 			'options' => array(
 				'project' => array(
 					'short' => 'P',
-					'help' => __d('cake_console', 'Project'),
+					'help' => 'Project',
 					'default' => '',
 				),
 			)
@@ -382,53 +382,55 @@ class TransifexShell extends AppShell {
 		$subcommandParserPull['options'] += array(
 			'language' => array(
 					'short' => 'l',
-					'help' => __d('cake_console', 'Language'),
+					'help' => 'Language',
 					'default' => ''
 				),
 				'resource' => array(
 					'short' => 'r',
-					'help' => __d('cake_console', 'Resource'),
+					'help' => 'Resource',
 					'default' => '',
 				),
 				'reviewed-only' => array(
 					'short' => 'R',
-					'help' => __d('cake_console', 'Only reviewed translations'),
+					'help' => 'Only reviewed translations',
 					'boolean' => true,
 				),
 				'plugin' => array(
 					'short' => 'p',
-					'help' => __d('cake_console', 'Plugin'),
+					'help' => 'Plugin',
 					'default' => ''
 				),
 				'dry-run' => array(
 					'short' => 'd',
-					'help' => __d('cake_console', 'Dry run the command, no files will actually be modified. Should be combined with verbose!'),
+					'help' => 'Dry run the command, no files will actually be modified. Should be combined with verbose!',
 					'boolean' => true
 				),
 		);
 
 		return parent::getOptionParser()
-			->description(__d('cake_console', "The Convert Shell converts files from dos/unix/mac to another system"))
+			->description("The Convert Shell converts files from dos/unix/mac to another system")
 			->addSubcommand('resources', array(
-				'help' => __d('cake_console', 'List all resources'),
+				'help' => 'List all resources',
 				'parser' => $subcommandParser
 			))
 			->addSubcommand('languages', array(
-				'help' => __d('cake_console', 'List all languages'),
+				'help' => 'List all languages',
 				'parser' => $subcommandParser
 			))
 			->addSubcommand('statistics', array(
-				'help' => __d('cake_console', 'Display project statistics'),
+				'help' => 'Display project statistics',
 				'parser' => $subcommandParser
 			))
 			->addSubcommand('pull', array(
-				'help' => __d('cake_console', 'Pull PO files'),
+				'help' => 'Pull PO files',
 				'parser' => $subcommandParserPull
-			))->addSubcommand('push', array(
-				'help' => __d('cake_console', 'Push PO files'),
+			))
+			->addSubcommand('push', array(
+				'help' => 'Push PO files',
 				'parser' => $subcommandParserPull
-			))->addSubcommand('update', array(
-				'help' => __d('cake_console', 'Push POT files'),
+			))
+			->addSubcommand('update', array(
+				'help' => 'Update POT files',
 				'parser' => $subcommandParserPull
 			));
 	}

@@ -70,10 +70,8 @@ Tip: If you want to dry-run it first, use `-d -v`. This will not modify your loc
 
 ## TODO
 
-* Use __d() to translate
 * More tests
+* Upgrade to CakePHP 3.0
 
 ## Disclaimer
-License: MIT
-
 Use at your own risk. Please provide any fixes or enhancements via issue or better pull request.
