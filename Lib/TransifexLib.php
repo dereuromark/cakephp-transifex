@@ -121,7 +121,7 @@ class TransifexLib {
 	public function putTranslations($resource, $language, $file) {
 		$url = static::BASE_URL . 'project/{project}/resource/' . $resource . '/translation/' . $language;
 		if (function_exists('curl_file_create') && function_exists('mime_content_type')) {
-			$body = array('file' => curl_file_create($file, mime_content_type($file), pathinfo($file, PATHINFO_BASENAME)));
+			$body = array('file' => curl_file_create($file, $this->_getMimeType($file), pathinfo($file, PATHINFO_BASENAME)));
 		} else {
 			$body = array('file' => '@' . $file);
 		}
@@ -173,12 +173,28 @@ class TransifexLib {
 	public function putResource($resource, $file) {
 		$url = static::BASE_URL . 'project/{project}/resource/' . $resource . '/content';
 		if (function_exists('curl_file_create')) {
-			$body = array('file' => curl_file_create($file, mime_content_type($file), pathinfo($file, PATHINFO_BASENAME)));
-		} else { 
+			$body = array('file' => curl_file_create($file, $this->_getMimeType($file), pathinfo($file, PATHINFO_BASENAME)));
+		} else {
 			$body = array('file' => '@' . $file);
 		}
 
 		return $this->_put($url, $body);
+	}
+
+	/**
+	 * @param string $file
+	 * @return string
+	 */
+	protected function _getMimeType($file) {
+		if (!function_exists('finfo_open')) {
+			if (!function_exists('mime_content_type')) {
+				throw new InternalErrorException('At least one of finfo or mime_content_type() needs to be available');
+			}
+			return mime_content_type($file);
+		}
+		$finfo = finfo_open(FILEINFO_MIME);
+		$mimetype = finfo_file($finfo, $file);
+		return $mimetype;
 	}
 
 	/**
@@ -234,17 +250,21 @@ class TransifexLib {
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		if (Configure::read('debug')) {
+			curl_setopt($ch, CURLOPT_VERBOSE, true);
+		}
 		$result = curl_exec($ch);
 		$info = curl_getinfo($ch);
 
-		if (curl_error($ch) || (int)$info['http_code'] !== 200) {
+		if (($errMsg = curl_error($ch)) || (int)$info['http_code'] !== 200) {
 			$error = true;
 		}
 
 		curl_close($ch);
 
 		if ($error) {
-			throw new RuntimeException('Unable to send data to API (' . $result . ')');
+			throw new RuntimeException('Unable to send data to API (' . $errMsg . ')');
 		}
 
 		return json_decode($result, true);

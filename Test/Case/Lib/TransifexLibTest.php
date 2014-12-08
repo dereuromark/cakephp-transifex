@@ -76,18 +76,18 @@ class TransifexLibTest extends CakeTestCase {
 		$this->assertTrue(!empty($res['reviewed_percentage']));
 	}
 
-    public function testPutTranslations() {
-        $this->Transifex = $this->getMock('TransifexLib', array('_put'));
-        $mockedResponse = array(
+	public function testPutTranslations() {
+		$this->Transifex = $this->getMock('TransifexLib', array('_put'));
+		$mockedResponse = array(
 			'strings_added' => 0,
 			'strings_updated' => 0,
 			'strings_delete' => 0,
 		);
 		$file = 'C:\xampp\htdocs\repo\cakefest\Plugin\Transifex\Test\test_files\test.pot';
-        $this->Transifex->expects($this->any())
-            ->method('_put')
-            ->will($this->returnValue($mockedResponse));
-        $result = $this->Transifex->putTranslations('foo', 'de', $file);
+		$this->Transifex->expects($this->any())
+			->method('_put')
+			->will($this->returnValue($mockedResponse));
+		$result = $this->Transifex->putTranslations('foo', 'de', $file);
 		$this->assertSame($mockedResponse, $result);
-    }
+	}
 }
