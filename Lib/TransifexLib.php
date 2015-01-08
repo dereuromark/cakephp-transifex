@@ -17,6 +17,7 @@ class TransifexLib {
 		'project' => '',
 		'user' => '',
 		'password' => '',
+		'debug' => false,
 	);
 
 	/**
@@ -251,7 +252,7 @@ class TransifexLib {
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		if (Configure::read('debug')) {
+		if ($this->settings['debug']) {
 			curl_setopt($ch, CURLOPT_VERBOSE, true);
 		}
 		$result = curl_exec($ch);

@@ -276,22 +276,22 @@ class TransifexShell extends AppShell {
 		}
 
 		$count = 0;
-			foreach ($resources as $resource) {
-				$this->out('Submitting POT file for resource ' . $resource, 1, Shell::NORMAL);
+		foreach ($resources as $resource) {
+			$this->out('Submitting POT file for resource ' . $resource, 1, Shell::NORMAL);
 
-				$path = !empty($this->params['plugin']) ? CakePlugin::path($this->params['plugin']) : APP;
-				$file = $path . 'Locale' . DS . $resource . '.pot';
-				$dir = dirname($file);
-				if (!is_file($file)) {
-					$this->error(sprintf('POT file not found: %s', str_replace(APP, DS, $file)));
-				}
-				if (empty($this->params['dry-run']) && !$this->Transifex->putResource($resource, $file)) {
-					return $this->error('Could not submit catalog.');
-				}
-
-				$count++;
-				$this->out(sprintf('POT file %s submitted', str_replace(APP, DS, $file)), 1, Shell::NORMAL);
+			$path = !empty($this->params['plugin']) ? CakePlugin::path($this->params['plugin']) : APP;
+			$file = $path . 'Locale' . DS . $resource . '.pot';
+			$dir = dirname($file);
+			if (!is_file($file)) {
+				$this->error(sprintf('POT file not found: %s', str_replace(APP, DS, $file)));
 			}
+			if (empty($this->params['dry-run']) && !$this->Transifex->putResource($resource, $file)) {
+				return $this->error('Could not submit catalog.');
+			}
+
+			$count++;
+			$this->out(sprintf('POT file %s submitted', str_replace(APP, DS, $file)), 1, Shell::NORMAL);
+		}
 
 		$this->out('... Done! ' . $count . ' POT file(s) pushed.');
 	}
