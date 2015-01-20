@@ -17,8 +17,12 @@ Installing the Plugin is pretty much as with every other CakePHP Plugin.
 Create an account at transifex.com and create/join a project and resources.
 
 Put the information regarding project, user and password in your config file or your bootstrap
-
-	$config['Transifex'] = array('project' => 'cakephp', 'user' => '...', 'password' => '...');
+```php
+$config['Transifex'] = array(
+	'project' => 'cakephp',
+	'user' => '...',
+	'password' => '...');
+```
 
 That's it. It should be up and running.
 
