@@ -83,7 +83,7 @@ class TransifexLibTest extends CakeTestCase {
 			'strings_updated' => 0,
 			'strings_delete' => 0,
 		);
-		$file = 'C:\xampp\htdocs\repo\cakefest\Plugin\Transifex\Test\test_files\test.pot';
+		$file = dirname(__FILE__) . '/../../test_files/test.pot';
 		$this->Transifex->expects($this->any())
 			->method('_put')
 			->will($this->returnValue($mockedResponse));

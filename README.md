@@ -3,7 +3,8 @@
 [![License](https://poser.pugx.org/dereuromark/cakephp-transifex/license.png)](https://packagist.org/packages/dereuromark/cakephp-transifex)
 [![Total Downloads](https://poser.pugx.org/dereuromark/cakephp-transifex/d/total.png)](https://packagist.org/packages/dereuromark/cakephp-transifex)
 
-A CakePHP 2.x Plugin that works with Transifex and pulls/pushes translations.
+A CakePHP 2.x Plugin that works with [Transifex](https://www.transifex.com/) and pulls/pushes translations.
+It uses the [Transifex API v2](http://docs.transifex.com/developer/api/).
 
 Please note: New functionality has been tested against latest CakePHP v2.x only. Please upgrade if possible.
 
@@ -67,6 +68,9 @@ If you happen to have one primary project and several other (plugin or CakePHP c
 	cake Transifex.Transifex pull -P cakephp
 
 Tip: If you want to dry-run it first, use `-d -v`. This will not modify your locale files but simulate the import.
+
+### Debugging
+Use `--debug` to have more verbose debugging output when pushing via cURL.
 
 ## TODO
 

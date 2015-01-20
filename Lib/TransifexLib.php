@@ -17,7 +17,7 @@ class TransifexLib {
 		'project' => '',
 		'user' => '',
 		'password' => '',
-		'debug' => false,
+		'debug' => false, // Verbose debugging for curl (when putting)
 	);
 
 	/**
@@ -91,6 +91,16 @@ class TransifexLib {
 	 */
 	public function getLanguage($language) {
 		$url = static::BASE_URL . 'project/{project}/language/' . $language . '/?details';
+		return $this->_get($url);
+	}
+
+	/**
+	 * TransifexLib::getLanguageInfo()
+	 *
+	 * @return array
+	 */
+	public function getLanguageInfo($language) {
+		$url = static::BASE_URL . 'language/' . $language . '/';
 		return $this->_get($url);
 	}
 

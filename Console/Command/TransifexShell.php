@@ -18,7 +18,9 @@ class TransifexShell extends AppShell {
 	public function startup() {
 		parent::startup();
 
-		$settings = array();
+		$settings = array(
+			'debug' => $this->params['debug']
+		);
 		if (!empty($this->params['project'])) {
 			$settings['project'] = $this->params['project'];
 		}
@@ -55,6 +57,34 @@ class TransifexShell extends AppShell {
 				$this->out('   locale: ' . $res['locale'], 1, Shell::VERBOSE);
 			}
 		}
+	}
+
+	/**
+	 * TransifexShell::languages()
+	 *
+	 * @return void
+	 */
+	public function language() {
+		$lang = !empty($this->args[0]) ? $this->args[0] : null;
+		if (!$lang) {
+			return $this->error('No language specified, please use two-letter-code, e.g. "de" or "en".');
+		}
+		$language = $this->Transifex->getLanguage($lang);
+		$this->out(print_r($language, true));
+	}
+
+	/**
+	 * TransifexShell::languages()
+	 *
+	 * @return void
+	 */
+	public function language_info() {
+		$lang = !empty($this->args[0]) ? $this->args[0] : null;
+		if (!$lang) {
+			return $this->error('No language specified, please use two-letter-code, e.g. "de" or "en".');
+		}
+		$language = $this->Transifex->getLanguageInfo($lang);
+		$this->out(print_r($language, true));
 	}
 
 	/**
@@ -376,6 +406,10 @@ class TransifexShell extends AppShell {
 					'help' => 'Project',
 					'default' => '',
 				),
+				'debug' => array(
+					'help' => 'Debug output (for network/connection details).',
+					'boolean' => true
+				),
 			)
 		);
 		$subcommandParserPull = $subcommandParser;
@@ -410,28 +444,36 @@ class TransifexShell extends AppShell {
 		return parent::getOptionParser()
 			->description("The Convert Shell converts files from dos/unix/mac to another system")
 			->addSubcommand('resources', array(
-				'help' => 'List all resources',
+				'help' => 'List all resources.',
 				'parser' => $subcommandParser
 			))
 			->addSubcommand('languages', array(
-				'help' => 'List all languages',
+				'help' => 'List all languages.',
+				'parser' => $subcommandParser
+			))
+			->addSubcommand('language', array(
+				'help' => 'Get project infos to a specific language.',
 				'parser' => $subcommandParser
 			))
 			->addSubcommand('statistics', array(
-				'help' => 'Display project statistics',
+				'help' => 'Display project statistics.',
 				'parser' => $subcommandParser
 			))
 			->addSubcommand('pull', array(
-				'help' => 'Pull PO files',
+				'help' => 'Pull PO files.',
 				'parser' => $subcommandParserPull
 			))
 			->addSubcommand('push', array(
-				'help' => 'Push PO files',
+				'help' => 'Push PO files.',
 				'parser' => $subcommandParserPull
 			))
 			->addSubcommand('update', array(
-				'help' => 'Update POT files',
+				'help' => 'Update POT files.',
 				'parser' => $subcommandParserPull
+			))
+			->addSubcommand('language_info', array(
+				'help' => 'Get infos to a specific language.',
+				'parser' => $subcommandParser
 			));
 	}
 

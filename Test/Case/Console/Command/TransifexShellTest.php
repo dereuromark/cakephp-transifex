@@ -8,6 +8,10 @@ class TransifexShellTest extends CakeTestCase {
 	public function setUp() {
 		parent::setUp();
 
+		CakePlugin::load(array(
+				'Transifex'
+			));
+
 		$this->TransifexShell = new TransifexShell();
 	}
 
