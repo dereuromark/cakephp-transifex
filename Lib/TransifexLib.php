@@ -2,6 +2,7 @@
 App::uses('String', 'Utility');
 App::uses('HttpSocket', 'Network/Http');
 App::uses('I18n', 'I18n');
+App::uses('Inflector', 'Utility');
 
 /**
  * Transifex API wrapper class.
@@ -87,6 +88,7 @@ class TransifexLib {
 	 * TransifexLib::getLanguage()
 	 * Only the project owner or the project maintainers can perform this action.
 	 *
+	 * @param $language
 	 * @return array
 	 */
 	public function getLanguage($language) {
@@ -97,6 +99,7 @@ class TransifexLib {
 	/**
 	 * TransifexLib::getLanguageInfo()
 	 *
+	 * @param $language
 	 * @return array
 	 */
 	public function getLanguageInfo($language) {
@@ -126,6 +129,9 @@ class TransifexLib {
 	 * @param $resource
 	 * @param $language
 	 * @param $file
+	 * @throws RuntimeException
+	 * @throws Exception
+	 * @throws RuntimeException
 	 * @return mixed
 	 * @author Gustav Wellner Bou <wellner@solutica.de>
 	 */
@@ -138,7 +144,7 @@ class TransifexLib {
 		}
 
 		try {
-			return $this->_put($url, $body);
+			return $this->_post($url, $body, 'PUT');
 		} catch(RuntimeException $e) {
 			/* Handling a very specific exception due to a Transifex bug */
 
@@ -189,7 +195,33 @@ class TransifexLib {
 			$body = array('file' => '@' . $file);
 		}
 
-		return $this->_put($url, $body);
+		return $this->_post($url, $body, 'PUT');
+	}
+
+	/**
+	 * TransifexLib::createResource()
+	 *
+	 * @param $resource
+	 * @param $file
+	 * @return mixed
+	 * @author Marco Beinbrech <marco.beinbrech@fotograf.de>
+	 */
+	public function createResource($resource, $file) {
+		$url = static::BASE_URL . 'project/{project}/resources';
+
+		$body = [
+			'name' => $resource,
+			'slug' => Inflector::slug($resource),
+			'i18n_type' => 'PO'
+		];
+
+		if (function_exists('curl_file_create')) {
+			$body['file'] = curl_file_create($file, $this->_getMimeType($file), pathinfo($file, PATHINFO_BASENAME));
+		} else {
+			$body['file'] = '@' . $file;
+		}
+
+		return $this->_post($url, $body);
 	}
 
 	/**
@@ -243,21 +275,22 @@ class TransifexLib {
 	}
 
 	/**
-	 * TransifexLib::_put()
+	 * TransifexLib::_post()
 	 *
 	 * @param $url
 	 * @param $data
+	 * @param string $requestType
 	 * @throws RuntimeException
 	 * @internal param $post
 	 * @return mixed
 	 * @author   Gustav Wellner Bou <wellner@solutica.de>
 	 */
-	protected function _put($url, $data) {
+	protected function _post($url, $data, $requestType = 'POST') {
 		$error = false;
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, String::insert($url, $this->settings, array('before' => '{', 'after' => '}')));
 		curl_setopt($ch, CURLOPT_USERPWD, $this->settings['user'] . ":" . $this->settings['password']);
-		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $requestType);
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -268,7 +301,7 @@ class TransifexLib {
 		$result = curl_exec($ch);
 		$info = curl_getinfo($ch);
 
-		if (($errMsg = curl_error($ch)) || (int)$info['http_code'] !== 200) {
+		if (($errMsg = curl_error($ch)) || !in_array((int)$info['http_code'], [200,201])) {
 			$error = true;
 		}
 
