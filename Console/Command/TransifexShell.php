@@ -19,7 +19,7 @@ class TransifexShell extends AppShell {
 		parent::startup();
 
 		$settings = array(
-			'debug' => $this->params['debug']
+			'debug' => !empty($this->params['debug']) ? $this->params['debug'] : false
 		);
 		if (!empty($this->params['project'])) {
 			$settings['project'] = $this->params['project'];
