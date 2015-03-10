@@ -14,12 +14,12 @@ class TransifexLib {
 
 	const BASE_URL = 'https://www.transifex.com/api/2/';
 
-	public $settings = array(
+	public $settings = [
 		'project' => '',
 		'user' => '',
 		'password' => '',
 		'debug' => false, // Verbose debugging for curl (when putting)
-	);
+	];
 
 	/**
 	 * TransifexLib::__construct()
@@ -27,7 +27,7 @@ class TransifexLib {
 	 * @param array $settings
 	 * @throws RuntimeException Exception.
 	 */
-	public function __construct($settings = array()) {
+	public function __construct($settings = []) {
 		$configSettings = (array)Configure::read('Transifex');
 		$this->settings = array_merge($this->settings, $configSettings, $settings);
 
@@ -138,9 +138,9 @@ class TransifexLib {
 	public function putTranslations($resource, $language, $file) {
 		$url = static::BASE_URL . 'project/{project}/resource/' . $resource . '/translation/' . $language;
 		if (function_exists('curl_file_create') && function_exists('mime_content_type')) {
-			$body = array('file' => curl_file_create($file, $this->_getMimeType($file), pathinfo($file, PATHINFO_BASENAME)));
+			$body = ['file' => curl_file_create($file, $this->_getMimeType($file), pathinfo($file, PATHINFO_BASENAME))];
 		} else {
-			$body = array('file' => '@' . $file);
+			$body = ['file' => '@' . $file];
 		}
 
 		try {
@@ -161,11 +161,11 @@ class TransifexLib {
 
 						// Then we could just append one non empty translation to that file and send it again
 						// But apart from successfully sending this file again, it wont affect the remote translations
-						return array(
+						return [
 							'strings_added' => 0,
 							'strings_updated' => 0,
 							'strings_delete' => 0,
-						);
+						];
 					} else {
 						throw new RuntimeException(sprintf('Could not extract any string from %s. Whereas file contains non-empty translation(s) for following key(s): %s.', $file, '"' . implode('", "', array_keys(array_filter($catalog))) . '"'));
 					}
@@ -190,9 +190,9 @@ class TransifexLib {
 	public function putResource($resource, $file) {
 		$url = static::BASE_URL . 'project/{project}/resource/' . $resource . '/content';
 		if (function_exists('curl_file_create')) {
-			$body = array('file' => curl_file_create($file, $this->_getMimeType($file), pathinfo($file, PATHINFO_BASENAME)));
+			$body = ['file' => curl_file_create($file, $this->_getMimeType($file), pathinfo($file, PATHINFO_BASENAME))];
 		} else {
-			$body = array('file' => '@' . $file);
+			$body = ['file' => '@' . $file];
 		}
 
 		return $this->_post($url, $body, 'PUT');
@@ -266,7 +266,7 @@ class TransifexLib {
 		$Socket = new HttpSocket();
 		$Socket->configAuth('Basic', $this->settings['user'], $this->settings['password']);
 
-		$url = String::insert($url, $this->settings, array('before' => '{', 'after' => '}'));
+		$url = String::insert($url, $this->settings, ['before' => '{', 'after' => '}']);
 		$response = $Socket->get($url);
 		if (!$response->isOk()) {
 			throw new RuntimeException('Unable to retrieve data from API');
@@ -288,7 +288,7 @@ class TransifexLib {
 	protected function _post($url, $data, $requestType = 'POST') {
 		$error = false;
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, String::insert($url, $this->settings, array('before' => '{', 'after' => '}')));
+		curl_setopt($ch, CURLOPT_URL, String::insert($url, $this->settings, ['before' => '{', 'after' => '}']));
 		curl_setopt($ch, CURLOPT_USERPWD, $this->settings['user'] . ":" . $this->settings['password']);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $requestType);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -301,7 +301,7 @@ class TransifexLib {
 		$result = curl_exec($ch);
 		$info = curl_getinfo($ch);
 
-		if (($errMsg = curl_error($ch)) || !in_array((int)$info['http_code'], [200,201])) {
+		if (($errMsg = curl_error($ch)) || !in_array((int)$info['http_code'], [200, 201])) {
 			$error = true;
 		}
 

@@ -18,9 +18,9 @@ class TransifexShell extends AppShell {
 	public function startup() {
 		parent::startup();
 
-		$settings = array(
+		$settings = [
 			'debug' => !empty($this->params['debug']) ? $this->params['debug'] : false
-		);
+		];
 		if (!empty($this->params['project'])) {
 			$settings['project'] = $this->params['project'];
 		}
@@ -109,7 +109,7 @@ class TransifexShell extends AppShell {
 
 		$stats = $this->Transifex->getStats($resource, $language);
 		if ($language) {
-			$stats = array($language => $stats);
+			$stats = [$language => $stats];
 		}
 
 		foreach ($stats as $language => $stat) {
@@ -170,7 +170,7 @@ class TransifexShell extends AppShell {
 
 		$approvedOnly = false;
 		if ($questioning && !$this->params['reviewed-only']) {
-			$approvedOnly = $this->in('Only reviewed translations', array('y', 'n'), 'n') === 'y';
+			$approvedOnly = $this->in('Only reviewed translations', ['y', 'n'], 'n') === 'y';
 		} else {
 			$approvedOnly = $this->params['reviewed-only'];
 		}
@@ -361,7 +361,7 @@ class TransifexShell extends AppShell {
 				return $catalog;
 			}
 		}
-		return array();
+		return [];
 	}
 
 	/**
@@ -370,7 +370,7 @@ class TransifexShell extends AppShell {
 	 * @return array
 	 */
 	protected function _resources() {
-		$ret = array();
+		$ret = [];
 		$resources = $this->Transifex->getResources();
 		foreach ($resources as $resource) {
 			$ret[] = $resource['slug'];
@@ -399,82 +399,82 @@ class TransifexShell extends AppShell {
 	 * @return ConsoleOptionParser
 	 */
 	public function getOptionParser() {
-		$subcommandParser = array(
-			'options' => array(
-				'project' => array(
+		$subcommandParser = [
+			'options' => [
+				'project' => [
 					'short' => 'P',
 					'help' => 'Project',
 					'default' => '',
-				),
-				'debug' => array(
+				],
+				'debug' => [
 					'help' => 'Debug output (for network/connection details).',
 					'boolean' => true
-				),
-			)
-		);
+				],
+			]
+		];
 		$subcommandParserPull = $subcommandParser;
-		$subcommandParserPull['options'] += array(
-			'language' => array(
+		$subcommandParserPull['options'] += [
+			'language' => [
 					'short' => 'l',
 					'help' => 'Language',
 					'default' => ''
-				),
-				'resource' => array(
+				],
+				'resource' => [
 					'short' => 'r',
 					'help' => 'Resource',
 					'default' => '',
-				),
-				'reviewed-only' => array(
+				],
+				'reviewed-only' => [
 					'short' => 'R',
 					'help' => 'Only reviewed translations',
 					'boolean' => true,
-				),
-				'plugin' => array(
+				],
+				'plugin' => [
 					'short' => 'p',
 					'help' => 'Plugin',
 					'default' => ''
-				),
-				'dry-run' => array(
+				],
+				'dry-run' => [
 					'short' => 'd',
 					'help' => 'Dry run the command, no files will actually be modified. Should be combined with verbose!',
 					'boolean' => true
-				),
-		);
+				],
+		];
 
 		return parent::getOptionParser()
 			->description("The Convert Shell converts files from dos/unix/mac to another system")
-			->addSubcommand('resources', array(
+			->addSubcommand('resources', [
 				'help' => 'List all resources.',
 				'parser' => $subcommandParser
-			))
-			->addSubcommand('languages', array(
+			])
+			->addSubcommand('languages', [
 				'help' => 'List all languages.',
 				'parser' => $subcommandParser
-			))
-			->addSubcommand('language', array(
+			])
+			->addSubcommand('language', [
 				'help' => 'Get project infos to a specific language.',
 				'parser' => $subcommandParser
-			))
-			->addSubcommand('statistics', array(
+			])
+			->addSubcommand('statistics', [
 				'help' => 'Display project statistics.',
 				'parser' => $subcommandParser
-			))
-			->addSubcommand('pull', array(
+			])
+			->addSubcommand('pull', [
 				'help' => 'Pull PO files.',
 				'parser' => $subcommandParserPull
-			))
-			->addSubcommand('push', array(
+			])
+			->addSubcommand('push', [
 				'help' => 'Push PO files.',
 				'parser' => $subcommandParserPull
-			))
-			->addSubcommand('update', array(
+			])
+			->addSubcommand('update', [
 				'help' => 'Update POT files.',
 				'parser' => $subcommandParserPull
-			))
-			->addSubcommand('language_info', array(
+			])
+			->addSubcommand('language_info', [
 				'help' => 'Get infos to a specific language.',
 				'parser' => $subcommandParser
-			));
+			]);
 	}
 
 }

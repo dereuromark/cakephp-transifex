@@ -15,9 +15,9 @@ class TransifexLibTest extends CakeTestCase {
 
 		$this->skipIf(!Configure::read('Transifex.user'));
 
-		$settings = array(
+		$settings = [
 			'project' => 'cakephp',
-		);
+		];
 		$this->Transifex = new TransifexLib($settings);
 	}
 
@@ -77,12 +77,12 @@ class TransifexLibTest extends CakeTestCase {
 	}
 
 	public function testPutTranslations() {
-		$this->Transifex = $this->getMock('TransifexLib', array('_put'));
-		$mockedResponse = array(
+		$this->Transifex = $this->getMock('TransifexLib', ['_put']);
+		$mockedResponse = [
 			'strings_added' => 0,
 			'strings_updated' => 0,
 			'strings_delete' => 0,
-		);
+		];
 		$file = dirname(__FILE__) . '/../../test_files/test.pot';
 		$this->Transifex->expects($this->any())
 			->method('_put')
