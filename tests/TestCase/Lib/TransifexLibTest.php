@@ -15,7 +15,7 @@ class TransifexLibTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		Configure::write('debug', 2);
+		//Configure::write('debug', 2);
 
 		$this->skipIf(!Configure::read('Transifex.user'));
 

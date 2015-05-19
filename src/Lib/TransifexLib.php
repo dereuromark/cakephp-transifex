@@ -1,9 +1,9 @@
 <?php
 namespace Transifex\Lib;
 
-use Cake\Network\Http\HttpSocket;
 use Cake\Core\Configure;
 use Cake\I18n\I18n;
+use Cake\Network\Http\Client;
 use Cake\Utility\Inflector;
 use Cake\Utility\Text;
 
@@ -266,7 +266,7 @@ class TransifexLib {
 	 * @throws RuntimeException Exception.
 	 */
 	protected function _get($url) {
-		$Socket = new HttpSocket();
+		$Socket = new Client();
 		$Socket->configAuth('Basic', $this->settings['user'], $this->settings['password']);
 
 		$url = Text::insert($url, $this->settings, ['before' => '{', 'after' => '}']);
