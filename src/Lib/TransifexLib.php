@@ -1,4 +1,6 @@
 <?php
+namespace Transifex\Lib;
+
 App::uses('String', 'Utility');
 App::uses('HttpSocket', 'Network/Http');
 App::uses('I18n', 'I18n');

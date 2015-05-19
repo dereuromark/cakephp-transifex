@@ -1,4 +1,6 @@
 <?php
+namespace Transifex\Test\TestCase\Shell;
+
 App::uses('TransifexShell', 'Transifex.Console/Command');
 
 class TransifexShellTest extends CakeTestCase {

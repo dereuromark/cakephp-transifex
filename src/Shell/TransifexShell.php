@@ -1,4 +1,6 @@
 <?php
+namespace Transifex\Shell;
+
 App::uses('AppShell', 'Console/Command');
 App::uses('TransifexLib', 'Transifex.Lib');
 

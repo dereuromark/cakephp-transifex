@@ -1,4 +1,6 @@
 <?php
+namespace Transifex\Test\TestCase\Lib;
+
 App::uses('TransifexLib', 'Transifex.Lib');
 
 /**
