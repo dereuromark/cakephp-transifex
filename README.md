@@ -3,6 +3,7 @@
 [![Minimum PHP Version](http://img.shields.io/badge/php-%3E%3D%205.4-8892BF.svg)](https://php.net/)
 [![License](https://poser.pugx.org/dereuromark/cakephp-transifex/license.png)](https://packagist.org/packages/dereuromark/cakephp-transifex)
 [![Total Downloads](https://poser.pugx.org/dereuromark/cakephp-transifex/d/total.png)](https://packagist.org/packages/dereuromark/cakephp-transifex)
+[![Coding Standards](https://img.shields.io/badge/cs-PSR--2--R-yellow.svg)](https://github.com/php-fig-rectified/fig-rectified-standards)
 
 A CakePHP 3.x plugin that works with [Transifex](https://www.transifex.com/) and pulls/pushes translations.
 It uses the [Transifex API v2](http://docs.transifex.com/developer/api/).
