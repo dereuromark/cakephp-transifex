@@ -29,12 +29,13 @@ Cake\Core\Configure::write('App', [
 	'namespace' => 'App'
 ]);
 Cake\Core\Configure::write('Transifex', [
-	'debug' => true,
-	'user' => '', // Fill with your own data for live testing
-	'password' => '' // Fill with your own data for live testing
+	'user' => 'dereuromark', // Fill with your own data for live testing
+	'password' => '123' // Fill with your own data for live testing
 ]);
 
 Cake\Core\Configure::write('debug', true);
+
+DEFINE('JSON_OPTIONS', JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_PRETTY_PRINT);
 
 $cache = [
 	'default' => [

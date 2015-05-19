@@ -1,0 +1,76 @@
+{
+    "archived": false,
+    "last_updated": "2015-05-03T20:48:06.387",
+    "description": "CakePHP: The Rapid Development Framework for PHP",
+    "tags": "framework, cakephp, php, ",
+    "trans_instructions": "",
+    "private": false,
+    "slug": "cakephp",
+    "source_language_code": "en",
+    "auto_join": true,
+    "maintainers": [
+        {
+            "username": "jrbasso"
+        },
+        {
+            "username": "AD7six"
+        },
+        {
+            "username": "dereuromark"
+        },
+        {
+            "username": "ADmad"
+        },
+        {
+            "username": "ceeram"
+        }
+    ],
+    "fill_up_resources": false,
+    "team": {
+        "id": 11004,
+        "name": "CakePHP team"
+    },
+    "organization": {
+        "slug": "jrbasso"
+    },
+    "teams": [
+        "pt_BR",
+        "no",
+        "it",
+        "ku",
+        "fr",
+        "pl",
+        "da",
+        "ru",
+        "es",
+        "fa",
+        "pt_PT",
+        "hu",
+        "ku_IQ",
+        "bg_BG",
+        "tr_TR",
+        "vi",
+        "zh_CN",
+        "bn_BD",
+        "de",
+        "es_AR",
+        "nl"
+    ],
+    "homepage": "http:\/\/cakephp.org\/",
+    "long_description": "",
+    "resources": [
+        {
+            "slug": "cake",
+            "name": "cake"
+        },
+        {
+            "slug": "cake_console",
+            "name": "cake_console"
+        },
+        {
+            "slug": "cake_dev",
+            "name": "cake_dev"
+        }
+    ],
+    "name": "CakePHP"
+}

@@ -67,7 +67,7 @@ To pull locales for a plugin you need to set `--plugin` or `-p`:
 
 	cake Transifex.Transifex pull -p Tools
 
-They will then be stored in the Plugin Locale folder.
+They will then be stored in the plugin's Locale folder.
 
 If you happen to have one primary project and several other (plugin or CakePHP core) projects, you can overwrite the config project setting using `--project` or `-P`:
 
@@ -76,12 +76,16 @@ If you happen to have one primary project and several other (plugin or CakePHP c
 Tip: If you want to dry-run it first, use `-d -v`. This will not modify your locale files but simulate the import.
 
 ### Tips
-You can alias the `Transifex.Transifex` shell syntax to just `Transifex` - or even a super-short `t`
-using [short aliasing](http://api.cakephp.org/3.0/class-Cake.Console.ShellDispatcher.html#_alias).
-
+You can use the auto-alias of `Transifex.Transifex` which is `Transifex` - or even a super-short `t`
+using [custom aliasing](http://api.cakephp.org/3.0/class-Cake.Console.ShellDispatcher.html#_alias).
 
 ### Debugging
 Use `--debug` to have more verbose debugging output when pushing via cURL.
+
+### Testing
+When testing `--debug` enables live test mode and uses the actual API instead of mocking and fake JSON response files.
+Make sure you provide valid credentials in your `tests/bootstrap.php` for this. Also make sure those
+are not your live credentials to avoid data loss. You should use a dedicated test account here to be sure.
 
 ## TODO
 

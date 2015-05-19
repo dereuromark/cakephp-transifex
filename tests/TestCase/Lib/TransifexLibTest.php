@@ -2,22 +2,35 @@
 namespace Transifex\Test\TestCase\Lib;
 
 use Cake\Core\Configure;
+use Cake\Core\Plugin;
 use Cake\TestSuite\TestCase;
-use Transifex\Lib\TransifexLib;
+use TestApp\Lib\TransifexLib;
 
 /**
- *
+ * Testing TransifexLib class
  */
 class TransifexLibTest extends TestCase {
 
 	public $Transifex = null;
 
+	/**
+	 * @return bool
+	 */
+	protected static function isDebug() {
+		return !empty($_SERVER['argv']) && in_array('--debug', $_SERVER['argv'], true);
+	}
+
+	/**
+	 * @return void
+	 */
 	public function setUp() {
 		parent::setUp();
 
-		//Configure::write('debug', 2);
+		Configure::write('App.namespace', 'TestApp');
 
-		$this->skipIf(!Configure::read('Transifex.user'));
+		if ($this->isDebug()) {
+			Configure::write('Transifex.debug', true);
+		}
 
 		$settings = [
 			'project' => 'cakephp',
@@ -25,6 +38,9 @@ class TransifexLibTest extends TestCase {
 		$this->Transifex = new TransifexLib($settings);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function testGetProject() {
 		$res = $this->Transifex->getProject();
 		//debug($res);
@@ -39,6 +55,9 @@ class TransifexLibTest extends TestCase {
 		$this->assertTrue(!empty($res['resources']));
 	}
 
+	/**
+	 * @return void
+	 */
 	public function testGetResources() {
 		$res = $this->Transifex->getResources();
 		//debug($res);
@@ -46,6 +65,9 @@ class TransifexLibTest extends TestCase {
 		$this->assertTrue(!empty($res[0]['i18n_type']));
 	}
 
+	/**
+	 * @return void
+	 */
 	public function testGetResource() {
 		$res = $this->Transifex->getResource('cake');
 		//debug($res);
@@ -63,13 +85,18 @@ class TransifexLibTest extends TestCase {
 		debug($res);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function testGetTranslations() {
 		$res = $this->Transifex->getTranslations('cake', 'de');
-		//debug($res);
 		$this->assertEquals('text/x-po', $res['mimetype']);
 		$this->assertTextContains('Plural-Forms: nplurals=2; plural=(n != 1);', $res['content']);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function testGetStats() {
 		$res = $this->Transifex->getStats('cake');
 		//debug($res);
@@ -80,8 +107,11 @@ class TransifexLibTest extends TestCase {
 		$this->assertTrue(!empty($res['reviewed_percentage']));
 	}
 
+	/**
+	 * @return void
+	 */
 	public function testPutResource() {
-		$file = dirname(__FILE__) . '/../../test_files/test.pot';
+		$file = Plugin::path('Transifex')  . 'tests/test_files/test.pot';
 		$this->assertTrue(is_file($file));
 		$resource = 'foo';
 
@@ -97,8 +127,11 @@ class TransifexLibTest extends TestCase {
 		$this->assertSame($mockedResponse, $result);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function testPutTranslations() {
-		$file = dirname(__FILE__) . '/../../test_files/test.pot';
+		$file = Plugin::path('Transifex')  . 'tests/test_files/test.pot';
 		$this->assertTrue(is_file($file));
 		$resource = 'foo';
 

@@ -1,0 +1,26 @@
+[
+    {
+        "source_language_code": "en",
+        "name": "cake",
+        "i18n_type": "PO",
+        "priority": "1",
+        "slug": "cake",
+        "categories": null
+    },
+    {
+        "source_language_code": "en",
+        "name": "cake_console",
+        "i18n_type": "PO",
+        "priority": "0",
+        "slug": "cake_console",
+        "categories": null
+    },
+    {
+        "source_language_code": "en",
+        "name": "cake_dev",
+        "i18n_type": "PO",
+        "priority": "0",
+        "slug": "cake_dev",
+        "categories": null
+    }
+]
