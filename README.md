@@ -4,7 +4,7 @@
 [![License](https://poser.pugx.org/dereuromark/cakephp-transifex/license.png)](https://packagist.org/packages/dereuromark/cakephp-transifex)
 [![Total Downloads](https://poser.pugx.org/dereuromark/cakephp-transifex/d/total.png)](https://packagist.org/packages/dereuromark/cakephp-transifex)
 
-A CakePHP 2.x Plugin that works with [Transifex](https://www.transifex.com/) and pulls/pushes translations.
+A CakePHP 2.x plugin that works with [Transifex](https://www.transifex.com/) and pulls/pushes translations.
 It uses the [Transifex API v2](http://docs.transifex.com/developer/api/).
 
 Please note: New functionality has been tested against latest CakePHP v2.x only. Please upgrade if possible.
@@ -37,7 +37,7 @@ To get a list of supported languages:
 
 	cake Transifex.Transifex languages
 
-Statistics for a resource can be garthered using
+Statistics for a resource can be gathered using
 
 	cake Transifex.Transifex statistics
 
@@ -80,7 +80,6 @@ Use `--debug` to have more verbose debugging output when pushing via cURL.
 ## TODO
 
 * More tests
-* Upgrade to CakePHP 3.0
 
 ## Disclaimer
 Use at your own risk. Please provide any fixes or enhancements via issue or better pull request.
