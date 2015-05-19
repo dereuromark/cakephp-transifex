@@ -1,12 +1,14 @@
 <?php
 namespace Transifex\Test\TestCase\Lib;
 
-App::uses('TransifexLib', 'Transifex.Lib');
+use Cake\Core\Configure;
+use Cake\TestSuite\TestCase;
+use Transifex\Lib\TransifexLib;
 
 /**
  *
  */
-class TransifexLibTest extends CakeTestCase {
+class TransifexLibTest extends TestCase {
 
 	public $Transifex = null;
 
@@ -92,4 +94,5 @@ class TransifexLibTest extends CakeTestCase {
 		$result = $this->Transifex->putTranslations('foo', 'de', $file);
 		$this->assertSame($mockedResponse, $result);
 	}
+
 }

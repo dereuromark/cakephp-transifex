@@ -1,10 +1,11 @@
 <?php
 namespace Transifex\Lib;
 
-App::uses('String', 'Utility');
-App::uses('HttpSocket', 'Network/Http');
-App::uses('I18n', 'I18n');
-App::uses('Inflector', 'Utility');
+use Cake\Network\Http\HttpSocket;
+use Cake\Core\Configure;
+use Cake\I18n\I18n;
+use Cake\Utility\Inflector;
+use Cake\Utility\Text;
 
 /**
  * Transifex API wrapper class.
@@ -268,7 +269,7 @@ class TransifexLib {
 		$Socket = new HttpSocket();
 		$Socket->configAuth('Basic', $this->settings['user'], $this->settings['password']);
 
-		$url = String::insert($url, $this->settings, ['before' => '{', 'after' => '}']);
+		$url = Text::insert($url, $this->settings, ['before' => '{', 'after' => '}']);
 		$response = $Socket->get($url);
 		if (!$response->isOk()) {
 			throw new RuntimeException('Unable to retrieve data from API');
@@ -290,7 +291,7 @@ class TransifexLib {
 	protected function _post($url, $data, $requestType = 'POST') {
 		$error = false;
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, String::insert($url, $this->settings, ['before' => '{', 'after' => '}']));
+		curl_setopt($ch, CURLOPT_URL, Text::insert($url, $this->settings, ['before' => '{', 'after' => '}']));
 		curl_setopt($ch, CURLOPT_USERPWD, $this->settings['user'] . ":" . $this->settings['password']);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $requestType);
 		curl_setopt($ch, CURLOPT_POST, 1);

@@ -1,25 +1,23 @@
 <?php
 namespace Transifex\Test\TestCase\Shell;
 
-App::uses('TransifexShell', 'Transifex.Console/Command');
+use Cake\Core\Plugin;
+use Cake\TestSuite\TestCase;
+use Transifex\Shell\TransifexShell;
 
-class TransifexShellTest extends CakeTestCase {
+class TransifexShellTest extends TestCase {
 
 	public $TransifexShell;
 
 	public function setUp() {
 		parent::setUp();
 
-		CakePlugin::load([
-				'Transifex'
-			]);
-
 		$this->TransifexShell = new TransifexShell();
 	}
 
 	public function testObject() {
 		$this->assertTrue(is_object($this->TransifexShell));
-		$this->assertInstanceOf('TransifexShell', $this->TransifexShell);
+		$this->assertInstanceOf('Transifex\Shell\TransifexShell', $this->TransifexShell);
 	}
 
 	//TODO

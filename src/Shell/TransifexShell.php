@@ -1,8 +1,9 @@
 <?php
 namespace Transifex\Shell;
 
-App::uses('AppShell', 'Console/Command');
-App::uses('TransifexLib', 'Transifex.Lib');
+use Cake\Console\Shell;
+use Cake\Core\Plugin;
+use Transifex\Lib\TransifexLib;
 
 /**
  * Wrapper to get Transifex information and import translation PO files.
@@ -13,7 +14,7 @@ App::uses('TransifexLib', 'Transifex.Lib');
  * @author Mark Scherer
  * @license MIT
  */
-class TransifexShell extends AppShell {
+class TransifexShell extends Shell {
 
 	public $Transifex;
 
@@ -190,7 +191,7 @@ class TransifexShell extends AppShell {
 
 				$locale = $this->_getLocale($language);
 
-				$path = !empty($this->params['plugin']) ? CakePlugin::path($this->params['plugin']) : APP;
+				$path = !empty($this->params['plugin']) ? Plugin::path($this->params['plugin']) : APP;
 				$file = $path . 'Locale' . DS . $locale . DS . 'LC_MESSAGES' . DS . $resource . '.po';
 				$dir = dirname($file);
 				if (!is_dir($dir)) {
@@ -263,7 +264,7 @@ class TransifexShell extends AppShell {
 
 				$locale = $this->_getLocale($language);
 
-				$path = !empty($this->params['plugin']) ? CakePlugin::path($this->params['plugin']) : APP;
+				$path = !empty($this->params['plugin']) ? Plugin::path($this->params['plugin']) : APP;
 				$file = $path . 'Locale' . DS . $locale . DS . 'LC_MESSAGES' . DS . $resource . '.po';
 				$dir = dirname($file);
 				if (!is_file($file)) {
@@ -311,7 +312,7 @@ class TransifexShell extends AppShell {
 		foreach ($resources as $resource) {
 			$this->out('Submitting POT file for resource ' . $resource, 1, Shell::NORMAL);
 
-			$path = !empty($this->params['plugin']) ? CakePlugin::path($this->params['plugin']) : APP;
+			$path = !empty($this->params['plugin']) ? Plugin::path($this->params['plugin']) : APP;
 			$file = $path . 'Locale' . DS . $resource . '.pot';
 			$dir = dirname($file);
 			if (!is_file($file)) {
