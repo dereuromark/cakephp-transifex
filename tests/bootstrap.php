@@ -28,6 +28,11 @@ require CORE_PATH . 'config/bootstrap.php';
 Cake\Core\Configure::write('App', [
 	'namespace' => 'App'
 ]);
+Cake\Core\Configure::write('Transifex', [
+	'debug' => true,
+	'user' => '', // Fill with your own data for live testing
+	'password' => '' // Fill with your own data for live testing
+]);
 
 Cake\Core\Configure::write('debug', true);
 

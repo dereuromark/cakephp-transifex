@@ -35,10 +35,10 @@ class TransifexLib {
 		$this->settings = array_merge($this->settings, $configSettings, $settings);
 
 		if (empty($this->settings['project'])) {
-			throw new RuntimeException('Project missing');
+			throw new \RuntimeException('Project missing');
 		}
-		if (empty($this->settings['user']) || empty($this->settings['password'])) {
-			throw new RuntimeException('Credentials missing');
+		if (empty($this->settings['debug']) && (empty($this->settings['user']) || empty($this->settings['password']))) {
+			throw new \RuntimeException('Credentials missing');
 		}
 	}
 
@@ -170,10 +170,10 @@ class TransifexLib {
 							'strings_delete' => 0,
 						];
 					} else {
-						throw new RuntimeException(sprintf('Could not extract any string from %s. Whereas file contains non-empty translation(s) for following key(s): %s.', $file, '"' . implode('", "', array_keys(array_filter($catalog))) . '"'));
+						throw new \RuntimeException(sprintf('Could not extract any string from %s. Whereas file contains non-empty translation(s) for following key(s): %s.', $file, '"' . implode('", "', array_keys(array_filter($catalog))) . '"'));
 					}
 				} else {
-					throw new RuntimeException(sprintf('Could not extract any string from %s. File seems empty.', $file));
+					throw new \RuntimeException(sprintf('Could not extract any string from %s. File seems empty.', $file));
 				}
 
 			} else {
@@ -267,12 +267,17 @@ class TransifexLib {
 	 */
 	protected function _get($url) {
 		$Socket = new Client();
-		$Socket->configAuth('Basic', $this->settings['user'], $this->settings['password']);
+		$config = [
+			'auth' => [
+				'username' => $this->settings['user'],
+				'password' => $this->settings['password']
+			]
+		];
 
 		$url = Text::insert($url, $this->settings, ['before' => '{', 'after' => '}']);
-		$response = $Socket->get($url);
+		$response = $Socket->get($url, [], $config);
 		if (!$response->isOk()) {
-			throw new RuntimeException('Unable to retrieve data from API');
+			throw new \RuntimeException('Unable to retrieve data from API');
 		}
 		return json_decode($response->body(), true);
 	}
@@ -311,7 +316,7 @@ class TransifexLib {
 		curl_close($ch);
 
 		if ($error) {
-			throw new RuntimeException('Unable to send data to API (' . $errMsg . ')');
+			throw new \RuntimeException('Unable to send data to API (' . $errMsg . ')');
 		}
 
 		return json_decode($result, true);

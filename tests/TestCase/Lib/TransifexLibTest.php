@@ -80,18 +80,39 @@ class TransifexLibTest extends TestCase {
 		$this->assertTrue(!empty($res['reviewed_percentage']));
 	}
 
+	public function testPutResource() {
+		$file = dirname(__FILE__) . '/../../test_files/test.pot';
+		$this->assertTrue(is_file($file));
+		$resource = 'foo';
+
+		$this->Transifex = $this->getMock('Transifex\Lib\TransifexLib', ['_post'], [$this->Transifex->settings]);
+		$mockedResponse = [
+			'added' => 1,
+		];
+		$this->Transifex->expects($this->any())
+			->method('_post')
+			->will($this->returnValue($mockedResponse));
+
+		$result = $this->Transifex->putResource($resource, $file);
+		$this->assertSame($mockedResponse, $result);
+	}
+
 	public function testPutTranslations() {
-		$this->Transifex = $this->getMock('TransifexLib', ['_put']);
+		$file = dirname(__FILE__) . '/../../test_files/test.pot';
+		$this->assertTrue(is_file($file));
+		$resource = 'foo';
+
+		$this->Transifex = $this->getMock('Transifex\Lib\TransifexLib', ['_post'], [$this->Transifex->settings]);
 		$mockedResponse = [
 			'strings_added' => 0,
 			'strings_updated' => 0,
 			'strings_delete' => 0,
 		];
-		$file = dirname(__FILE__) . '/../../test_files/test.pot';
 		$this->Transifex->expects($this->any())
-			->method('_put')
+			->method('_post')
 			->will($this->returnValue($mockedResponse));
-		$result = $this->Transifex->putTranslations('foo', 'de', $file);
+
+		$result = $this->Transifex->putTranslations($resource, 'de', $file);
 		$this->assertSame($mockedResponse, $result);
 	}
 
