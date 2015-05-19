@@ -1,28 +1,29 @@
 # CakePHP Transifex Plugin
-[![Build Status](https://api.travis-ci.org/dereuromark/cakephp-transifex.png)](https://travis-ci.org/dereuromark/cakephp-transifex)
+[![Build Status](https://api.travis-ci.org/dereuromark/cakephp-transifex.svg)](https://travis-ci.org/dereuromark/cakephp-transifex)
 [![Minimum PHP Version](http://img.shields.io/badge/php-%3E%3D%205.4-8892BF.svg)](https://php.net/)
 [![License](https://poser.pugx.org/dereuromark/cakephp-transifex/license.png)](https://packagist.org/packages/dereuromark/cakephp-transifex)
 [![Total Downloads](https://poser.pugx.org/dereuromark/cakephp-transifex/d/total.png)](https://packagist.org/packages/dereuromark/cakephp-transifex)
 
-A CakePHP 2.x plugin that works with [Transifex](https://www.transifex.com/) and pulls/pushes translations.
+A CakePHP 3.x plugin that works with [Transifex](https://www.transifex.com/) and pulls/pushes translations.
 It uses the [Transifex API v2](http://docs.transifex.com/developer/api/).
 
-Please note: New functionality has been tested against latest CakePHP v2.x only. Please upgrade if possible.
+Please note: New functionality has been tested against latest CakePHP 3.x version only. Please upgrade if possible.
 
 ## Installation
-Installing the Plugin is pretty much as with every other CakePHP Plugin.
+Installing the plugin is pretty much as with every other CakePHP plugin.
 
-* Put the files in `APP/Plugin/Transifex`
-* Make sure you have `CakePlugin::load('Transifex')` or `CakePlugin::loadAll()` in your bootstrap
+* Composer `dereuromark/cakephp-transifex:dev-master`
+* Make sure you have `Plugin::load('Transifex')` or `Plugin::loadAll()` in your bootstrap
 
 Create an account at transifex.com and create/join a project and resources.
 
 Put the information regarding project, user and password in your config file or your bootstrap
 ```php
-$config['Transifex'] = array(
+$config['Transifex'] = [
 	'project' => 'cakephp',
 	'user' => '...',
-	'password' => '...');
+	'password' => '...'
+];
 ```
 
 That's it. It should be up and running.
@@ -73,6 +74,11 @@ If you happen to have one primary project and several other (plugin or CakePHP c
 	cake Transifex.Transifex pull -P cakephp
 
 Tip: If you want to dry-run it first, use `-d -v`. This will not modify your locale files but simulate the import.
+
+### Tips
+You can alias the `Transifex.Transifex` shell syntax to just `Transifex` - or even a super-short `t`
+using [short aliasing](http://api.cakephp.org/3.0/class-Cake.Console.ShellDispatcher.html#_alias).
+
 
 ### Debugging
 Use `--debug` to have more verbose debugging output when pushing via cURL.
