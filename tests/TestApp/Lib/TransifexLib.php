@@ -1,11 +1,10 @@
 <?php
 namespace TestApp\Lib;
 
-use Cake\Core\Configure;
-use Transifex\Lib\TransifexLib as BaseTransifexLib;
+use Cake\Core\Plugin;
 use Cake\Utility\Inflector;
 use Cake\Utility\Text;
-use Cake\Core\Plugin;
+use Transifex\Lib\TransifexLib as BaseTransifexLib;
 
 /**
  * Transifex API wrapper class.
@@ -16,11 +15,8 @@ use Cake\Core\Plugin;
 class TransifexLib extends BaseTransifexLib {
 
 	/**
-	 * TransifexLib::_get()
-	 *
 	 * @param string $url
 	 * @return array
-	 * @throws RuntimeException Exception.
 	 */
 	protected function _get($url) {
 		$slug = Text::insert($url, $this->settings, ['before' => '{', 'after' => '}']);
@@ -44,13 +40,9 @@ class TransifexLib extends BaseTransifexLib {
 	}
 
 	/**
-	 * TransifexLib::_post()
-	 *
-	 * @param $url
-	 * @param $data
+	 * @param string $url
+	 * @param mixed $data
 	 * @param string $requestType
-	 * @throws RuntimeException
-	 * @internal param $post
 	 * @return mixed
 	 * @author   Gustav Wellner Bou <wellner@solutica.de>
 	 */

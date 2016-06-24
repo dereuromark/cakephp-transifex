@@ -3,9 +3,11 @@ namespace Transifex\Lib;
 
 use Cake\Core\Configure;
 use Cake\I18n\I18n;
+use Cake\Network\Exception\InternalErrorException;
 use Cake\Network\Http\Client;
 use Cake\Utility\Inflector;
 use Cake\Utility\Text;
+use RuntimeException;
 
 /**
  * Transifex API wrapper class.
@@ -17,6 +19,9 @@ class TransifexLib {
 
 	const BASE_URL = 'https://www.transifex.com/api/2/';
 
+	/**
+	 * @var array
+	 */
 	public $settings = [
 		'project' => '',
 		'user' => '',
@@ -28,17 +33,17 @@ class TransifexLib {
 	 * TransifexLib::__construct()
 	 *
 	 * @param array $settings
-	 * @throws RuntimeException Exception.
+	 * @throws \RuntimeException Exception.
 	 */
 	public function __construct($settings = []) {
 		$configSettings = (array)Configure::read('Transifex');
 		$this->settings = array_merge($this->settings, $configSettings, $settings);
 
 		if (empty($this->settings['project'])) {
-			throw new \RuntimeException('Project missing');
+			throw new RuntimeException('Project missing');
 		}
 		if (empty($this->settings['debug']) && (empty($this->settings['user']) || empty($this->settings['password']))) {
-			throw new \RuntimeException('Credentials missing');
+			throw new RuntimeException('Credentials missing');
 		}
 	}
 
@@ -88,10 +93,9 @@ class TransifexLib {
 	}
 
 	/**
-	 * TransifexLib::getLanguage()
 	 * Only the project owner or the project maintainers can perform this action.
 	 *
-	 * @param $language
+	 * @param string $language
 	 * @return array
 	 */
 	public function getLanguage($language) {
@@ -102,7 +106,7 @@ class TransifexLib {
 	/**
 	 * TransifexLib::getLanguageInfo()
 	 *
-	 * @param $language
+	 * @param string $language
 	 * @return array
 	 */
 	public function getLanguageInfo($language) {
@@ -113,8 +117,8 @@ class TransifexLib {
 	/**
 	 * TransifexLib::getTranslations()
 	 *
-	 * @param mixed $resource
-	 * @param mixed $language
+	 * @param string $resource
+	 * @param string $language
 	 * @param bool $reviewedOnly
 	 * @return array
 	 */
@@ -129,12 +133,10 @@ class TransifexLib {
 	/**
 	 * TransifexLib::putTranslations()
 	 *
-	 * @param $resource
-	 * @param $language
-	 * @param $file
-	 * @throws RuntimeException
-	 * @throws Exception
-	 * @throws RuntimeException
+	 * @param string $resource
+	 * @param string $language
+	 * @param string $file
+	 * @throws \RuntimeException
 	 * @return mixed
 	 * @author Gustav Wellner Bou <wellner@solutica.de>
 	 */
@@ -169,11 +171,11 @@ class TransifexLib {
 							'strings_updated' => 0,
 							'strings_delete' => 0,
 						];
-					} else {
-						throw new \RuntimeException(sprintf('Could not extract any string from %s. Whereas file contains non-empty translation(s) for following key(s): %s.', $file, '"' . implode('", "', array_keys(array_filter($catalog))) . '"'));
 					}
+
+					throw new RuntimeException(sprintf('Could not extract any string from %s. Whereas file contains non-empty translation(s) for following key(s): %s.', $file, '"' . implode('", "', array_keys(array_filter($catalog))) . '"'));
 				} else {
-					throw new \RuntimeException(sprintf('Could not extract any string from %s. File seems empty.', $file));
+					throw new RuntimeException(sprintf('Could not extract any string from %s. File seems empty.', $file));
 				}
 
 			} else {
@@ -185,8 +187,8 @@ class TransifexLib {
 	/**
 	 * TransifexLib::putResource()
 	 *
-	 * @param $resource
-	 * @param $file
+	 * @param string $resource
+	 * @param string $file
 	 * @return mixed
 	 * @author Gustav Wellner Bou <wellner@solutica.de>
 	 */
@@ -204,8 +206,8 @@ class TransifexLib {
 	/**
 	 * TransifexLib::createResource()
 	 *
-	 * @param $resource
-	 * @param $file
+	 * @param string $resource
+	 * @param string $file
 	 * @return mixed
 	 * @author Marco Beinbrech <marco.beinbrech@fotograf.de>
 	 */
@@ -247,7 +249,7 @@ class TransifexLib {
 	 * TransifexLib::getStats()
 	 *
 	 * @param string $resource
-	 * @param string $language
+	 * @param string|null $language
 	 * @return array
 	 */
 	public function getStats($resource, $language = null) {
@@ -263,7 +265,7 @@ class TransifexLib {
 	 *
 	 * @param string $url
 	 * @return array
-	 * @throws RuntimeException Exception.
+	 * @throws \RuntimeException Exception.
 	 */
 	protected function _get($url) {
 		$Socket = new Client();
@@ -277,19 +279,16 @@ class TransifexLib {
 		$url = Text::insert($url, $this->settings, ['before' => '{', 'after' => '}']);
 		$response = $Socket->get($url, [], $config);
 		if (!$response->isOk()) {
-			throw new \RuntimeException('Unable to retrieve data from API');
+			throw new RuntimeException('Unable to retrieve data from API');
 		}
 		return json_decode($response->body(), true);
 	}
 
 	/**
-	 * TransifexLib::_post()
-	 *
-	 * @param $url
-	 * @param $data
+	 * @param string $url
+	 * @param mixed $data
 	 * @param string $requestType
-	 * @throws RuntimeException
-	 * @internal param $post
+	 * @throws \RuntimeException
 	 * @return mixed
 	 * @author   Gustav Wellner Bou <wellner@solutica.de>
 	 */
@@ -297,7 +296,7 @@ class TransifexLib {
 		$error = false;
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, Text::insert($url, $this->settings, ['before' => '{', 'after' => '}']));
-		curl_setopt($ch, CURLOPT_USERPWD, $this->settings['user'] . ":" . $this->settings['password']);
+		curl_setopt($ch, CURLOPT_USERPWD, $this->settings['user'] . ':' . $this->settings['password']);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $requestType);
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
@@ -316,7 +315,7 @@ class TransifexLib {
 		curl_close($ch);
 
 		if ($error) {
-			throw new \RuntimeException('Unable to send data to API (' . $errMsg . ')');
+			throw new RuntimeException('Unable to send data to API (' . $errMsg . ')');
 		}
 
 		return json_decode($result, true);

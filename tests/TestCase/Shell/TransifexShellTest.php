@@ -1,12 +1,14 @@
 <?php
 namespace Transifex\Test\TestCase\Shell;
 
-use Cake\Core\Plugin;
 use Cake\TestSuite\TestCase;
 use Transifex\Shell\TransifexShell;
 
 class TransifexShellTest extends TestCase {
 
+	/**
+	 * @var \Transifex\Shell\TransifexShell
+	 */
 	public $TransifexShell;
 
 	public function setUp() {
@@ -21,4 +23,5 @@ class TransifexShellTest extends TestCase {
 	}
 
 	//TODO
+
 }

@@ -30,5 +30,8 @@
 			"Cake\\Test\\": "vendor/cakephp/cakephp/tests",
 			"TestApp\\": "tests/TestApp"
 		}
+	},
+	"require-dev": {
+		"fig-r/psr2r-sniffer": "dev-master"
 	}
 }

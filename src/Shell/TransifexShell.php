@@ -9,15 +9,19 @@ use Transifex\Lib\TransifexLib;
  * Wrapper to get Transifex information and import translation PO files.
  * Use verbose output to display more detailed information.
  *
- * @version 1.0
- * @cakephp 2.x
  * @author Mark Scherer
  * @license MIT
  */
 class TransifexShell extends Shell {
 
+	/**
+	 * @var \Transifex\Lib\TransifexLib
+	 */
 	public $Transifex;
 
+	/**
+	 * @return void
+	 */
 	public function startup() {
 		parent::startup();
 
@@ -357,7 +361,8 @@ class TransifexShell extends Shell {
 		$catalog = $this->L10n->catalog(strtolower(str_replace('_', '-', $language)));
 		if (!empty($catalog['locale'])) {
 			return $catalog;
-		} elseif (strpos($language, '_')) {
+		}
+		if (strpos($language, '_')) {
 			list($languagePrefix) = explode('_', $language);
 			$catalog = $this->L10n->catalog($languagePrefix);
 			if (!empty($catalog['locale'])) {
@@ -399,7 +404,7 @@ class TransifexShell extends Shell {
 	/**
 	 * Get the option parser
 	 *
-	 * @return ConsoleOptionParser
+	 * @return \Cake\Console\ConsoleOptionParser
 	 */
 	public function getOptionParser() {
 		$subcommandParser = [
@@ -445,7 +450,7 @@ class TransifexShell extends Shell {
 		];
 
 		return parent::getOptionParser()
-			->description("The Convert Shell converts files from dos/unix/mac to another system")
+			->description('The Convert Shell converts files from dos/unix/mac to another system')
 			->addSubcommand('resources', [
 				'help' => 'List all resources.',
 				'parser' => $subcommandParser

@@ -11,6 +11,9 @@ use TestApp\Lib\TransifexLib;
  */
 class TransifexLibTest extends TestCase {
 
+	/**
+	 * @var \Transifex\Lib\TransifexLib|null
+	 */
 	public $Transifex = null;
 
 	/**
@@ -111,7 +114,7 @@ class TransifexLibTest extends TestCase {
 	 * @return void
 	 */
 	public function testPutResource() {
-		$file = Plugin::path('Transifex')  . 'tests/test_files/test.pot';
+		$file = Plugin::path('Transifex') . 'tests/test_files/test.pot';
 		$this->assertTrue(is_file($file));
 		$resource = 'foo';
 
@@ -131,7 +134,7 @@ class TransifexLibTest extends TestCase {
 	 * @return void
 	 */
 	public function testPutTranslations() {
-		$file = Plugin::path('Transifex')  . 'tests/test_files/test.pot';
+		$file = Plugin::path('Transifex') . 'tests/test_files/test.pot';
 		$this->assertTrue(is_file($file));
 		$resource = 'foo';
 
