@@ -13,7 +13,7 @@ Please note: New functionality has been tested against latest CakePHP 3.x versio
 ## Installation
 Installing the plugin is pretty much as with every other CakePHP plugin.
 
-* Composer `dereuromark/cakephp-transifex:dev-master`
+* Composer require `dereuromark/cakephp-transifex:dev-master`
 * Make sure you have `Plugin::load('Transifex')` or `Plugin::loadAll()` in your bootstrap
 
 Create an account at transifex.com and create/join a project and resources.
