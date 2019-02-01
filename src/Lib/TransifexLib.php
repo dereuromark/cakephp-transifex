@@ -2,9 +2,9 @@
 namespace Transifex\Lib;
 
 use Cake\Core\Configure;
-use Cake\I18n\I18n;
-use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\Client;
+use Cake\Http\Exception\InternalErrorException;
+use Cake\I18n\I18n;
 use Cake\Utility\Text;
 use RuntimeException;
 
