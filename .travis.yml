@@ -3,14 +3,12 @@ language: php
 sudo: false
 
 php:
-  - 5.4
-  - 5.5
   - 5.6
-  - 7.0
+  - 7.3
 
 env:
   matrix:
-    - DB=mysql db_class='Cake\Database\Driver\Mysql' db_dsn='mysql:host=0.0.0.0;dbname=cakephp_test' db_database='cakephp_test' db_username='travis' db_password=''
+    - DB=mysql db_dsn='mysql://root@127.0.0.1/cakephp_test'
   global:
     - DEFAULT=1
 
@@ -18,15 +16,16 @@ matrix:
   fast_finish: true
 
   include:
-    - php: 5.6
+    - php: 7.2
       env: PHPCS=1 DEFAULT=0
 
-    - php: 5.6
+    - php: 7.0
       env: COVERALLS=1 DEFAULT=0
 
 before_script:
-  - composer self-update
   - composer install --prefer-source --no-interaction
+
+  - composer require --dev phpunit/phpunit:"^5.7.14|^6.0"
 
   - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'CREATE DATABASE cakephp_test;'; fi"
 
@@ -38,9 +37,9 @@ before_script:
   - cp phpunit.xml.dist phpunit.xml
 
 script:
-  - sh -c "if [ '$COVERALLS' = '1' ]; then phpunit --coverage-clover build/logs/clover.xml; fi"
+  - sh -c "if [ '$COVERALLS' = '1' ]; then vendor/bin/phpunit --coverage-clover build/logs/clover.xml; fi"
   - sh -c "if [ '$COVERALLS' = '1' ]; then php vendor/bin/coveralls -c .coveralls.yml -v; fi"
-  - sh -c "if [ '$DEFAULT' = '1' ]; then phpunit; fi"
+  - sh -c "if [ '$DEFAULT' = '1' ]; then vendor/bin/phpunit; fi"
   - sh -c "if [ '$PHPCS' = '1' ]; then vendor/bin/phpcs -p --extensions=php --standard=vendor/fig-r/psr2r-sniffer/PSR2R/ruleset.xml --ignore=vendor --ignore=docs . ; fi"
 
 notifications:

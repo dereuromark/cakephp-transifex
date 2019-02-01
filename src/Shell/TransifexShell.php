@@ -55,13 +55,16 @@ class TransifexShell extends Shell {
 	public function languages() {
 		$languages = $this->_languages();
 		foreach ($languages as $language) {
-			$res = $this->_getCatalog($language);
-			if (!empty($res['language'])) {
-				$language .= ' | ' . $res['language'];
+			$locale = locale_canonicalize($language);
+			if (!empty($locale)) {
+				$res = locale_get_display_language($locale);
+				if (!empty($res)) {
+					$language .= ' | ' . $res;
+				}
 			}
 			$this->out(' - ' . $language);
-			if (!empty($res['locale'])) {
-				$this->out('   locale: ' . $res['locale'], 1, Shell::VERBOSE);
+			if (!empty($locale)) {
+				$this->out('   locale: ' . $locale, 1, Shell::VERBOSE);
 			}
 		}
 	}
@@ -340,36 +343,11 @@ class TransifexShell extends Shell {
 	 * @return string Locale
 	 */
 	protected function _getLocale($language) {
-		$locale = $language;
-		$catalog = $this->_getCatalog($language);
-		if (!empty($catalog['locale'])) {
-			$locale = $catalog['locale'];
+		$locale = locale_canonicalize($language);
+		if (!empty($locale)) {
+			return $locale;
 		}
-		return $locale;
-	}
-
-	/**
-	 * TransifexShell::_getCatalog()
-	 *
-	 * @param mixed $language
-	 * @return array Catalog
-	 */
-	protected function _getCatalog($language) {
-		if (!isset($this->L10n)) {
-			$this->L10n = new L10n();
-		}
-		$catalog = $this->L10n->catalog(strtolower(str_replace('_', '-', $language)));
-		if (!empty($catalog['locale'])) {
-			return $catalog;
-		}
-		if (strpos($language, '_')) {
-			list($languagePrefix) = explode('_', $language);
-			$catalog = $this->L10n->catalog($languagePrefix);
-			if (!empty($catalog['locale'])) {
-				return $catalog;
-			}
-		}
-		return [];
+		return $language;
 	}
 
 	/**
