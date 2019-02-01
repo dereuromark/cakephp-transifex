@@ -118,7 +118,10 @@ class TransifexLibTest extends TestCase {
 		$this->assertTrue(is_file($file));
 		$resource = 'foo';
 
-		$this->Transifex = $this->getMock('Transifex\Lib\TransifexLib', ['_post'], [$this->Transifex->settings]);
+		$this->Transifex = $this->getMockBuilder('Transifex\Lib\TransifexLib')
+			->setMethods(['_post'])
+			->setConstructorArgs([$this->Transifex->settings])
+			->getMock();
 		$mockedResponse = [
 			'added' => 1,
 		];
@@ -138,7 +141,10 @@ class TransifexLibTest extends TestCase {
 		$this->assertTrue(is_file($file));
 		$resource = 'foo';
 
-		$this->Transifex = $this->getMock('Transifex\Lib\TransifexLib', ['_post'], [$this->Transifex->settings]);
+		$this->Transifex = $this->getMockBuilder('Transifex\Lib\TransifexLib')
+			->setMethods(['_post'])
+			->setConstructorArgs([$this->Transifex->settings])
+			->getMock();
 		$mockedResponse = [
 			'strings_added' => 0,
 			'strings_updated' => 0,
