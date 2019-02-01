@@ -11,12 +11,18 @@ class TransifexShellTest extends TestCase {
 	 */
 	public $TransifexShell;
 
+	/**
+	 * @return void
+	 */
 	public function setUp() {
 		parent::setUp();
 
 		$this->TransifexShell = new TransifexShell();
 	}
 
+	/**
+	 * @return void
+	 */
 	public function testObject() {
 		$this->assertTrue(is_object($this->TransifexShell));
 		$this->assertInstanceOf('Transifex\Shell\TransifexShell', $this->TransifexShell);
