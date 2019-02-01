@@ -3,9 +3,8 @@ namespace Transifex\Lib;
 
 use Cake\Core\Configure;
 use Cake\I18n\I18n;
-use Cake\Network\Exception\InternalErrorException;
-use Cake\Network\Http\Client;
-use Cake\Utility\Inflector;
+use Cake\Http\Exception\InternalErrorException;
+use Cake\Http\Client;
 use Cake\Utility\Text;
 use RuntimeException;
 
@@ -216,7 +215,7 @@ class TransifexLib {
 
 		$body = [
 			'name' => $resource,
-			'slug' => Inflector::slug($resource),
+			'slug' => Text::slug($resource),
 			'i18n_type' => 'PO'
 		];
 

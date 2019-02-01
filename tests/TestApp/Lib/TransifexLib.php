@@ -2,7 +2,6 @@
 namespace TestApp\Lib;
 
 use Cake\Core\Plugin;
-use Cake\Utility\Inflector;
 use Cake\Utility\Text;
 use Transifex\Lib\TransifexLib as BaseTransifexLib;
 
@@ -21,7 +20,7 @@ class TransifexLib extends BaseTransifexLib {
 	protected function _get($url) {
 		$slug = Text::insert($url, $this->settings, ['before' => '{', 'after' => '}']);
 		$slug = str_replace(static::BASE_URL, '', $slug);
-		$slug = 'GET_' . Inflector::slug($slug);
+		$slug = 'GET_' . Text::slug($slug);
 
 		$file = Plugin::path('Transifex') . 'tests/test_files/json/' . $slug . '.json';
 		if (!$this->settings['debug'] && file_exists($file)) {
@@ -49,7 +48,7 @@ class TransifexLib extends BaseTransifexLib {
 	protected function _post($url, $data, $requestType = 'POST') {
 		$slug = Text::insert($url, $this->settings, ['before' => '{', 'after' => '}']);
 		$slug = str_replace(static::BASE_URL, '', $slug);
-		$slug = strtolower($requestType) . '_' . Inflector::slug($slug) . '_' . md5($data);
+		$slug = strtolower($requestType) . '_' . Text::slug($slug) . '_' . md5($data);
 		$file = Plugin::path('Transifex') . 'tests/test_files/json/' . $slug . '.json';
 		if (!$this->settings['debug'] && file_exists($file)) {
 			$content = file_get_contents($file);
