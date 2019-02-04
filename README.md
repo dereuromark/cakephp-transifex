@@ -1,7 +1,7 @@
 # CakePHP Transifex Plugin
 [![Build Status](https://api.travis-ci.org/dereuromark/cakephp-transifex.svg)](https://travis-ci.org/dereuromark/cakephp-transifex)
 [![Coverage Status](https://img.shields.io/codecov/c/github/dereuromark/cakephp-transifex/master.svg)](https://codecov.io/github/dereuromark/cakephp-transifex?branch=master)
-[![Minimum PHP Version](http://img.shields.io/badge/php-%3E%3D%205.4-8892BF.svg)](https://php.net/)
+[![Minimum PHP Version](http://img.shields.io/badge/php-%3E%3D%205.6-8892BF.svg)](https://php.net/)
 [![License](https://poser.pugx.org/dereuromark/cakephp-transifex/license.png)](https://packagist.org/packages/dereuromark/cakephp-transifex)
 [![Total Downloads](https://poser.pugx.org/dereuromark/cakephp-transifex/d/total.png)](https://packagist.org/packages/dereuromark/cakephp-transifex)
 [![Coding Standards](https://img.shields.io/badge/cs-PSR--2--R-yellow.svg)](https://github.com/php-fig-rectified/fig-rectified-standards)
