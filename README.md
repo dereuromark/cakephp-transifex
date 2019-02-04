@@ -1,5 +1,6 @@
 # CakePHP Transifex Plugin
 [![Build Status](https://api.travis-ci.org/dereuromark/cakephp-transifex.svg)](https://travis-ci.org/dereuromark/cakephp-transifex)
+[![Coverage Status](https://img.shields.io/codecov/c/github/dereuromark/cakephp-transifex/master.svg)](https://codecov.io/github/dereuromark/cakephp-transifex?branch=master)
 [![Minimum PHP Version](http://img.shields.io/badge/php-%3E%3D%205.4-8892BF.svg)](https://php.net/)
 [![License](https://poser.pugx.org/dereuromark/cakephp-transifex/license.png)](https://packagist.org/packages/dereuromark/cakephp-transifex)
 [![Total Downloads](https://poser.pugx.org/dereuromark/cakephp-transifex/d/total.png)](https://packagist.org/packages/dereuromark/cakephp-transifex)
@@ -55,8 +56,8 @@ A shortcut to import a specific language for a specific resource, you can also u
 
 
 
-The PO files will be stored in `APP/Locale/{locale}/LC_MESSAGES/{resource}.po`.
-Using subversion or git is highly recommended to quickly overview and confirm the changes made.
+The PO files will be stored in `src/Locale/{locale}/LC_MESSAGES/{resource}.po`.
+Using version control is highly recommended to quickly overview and confirm the changes made.
 
 ### Advanced usage
 
