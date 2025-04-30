@@ -9,7 +9,11 @@
 A CakePHP 3.x plugin that works with [Transifex](https://www.transifex.com/) and pulls/pushes translations.
 It uses the [Transifex API v2](http://docs.transifex.com/developer/api/).
 
-Please note: New functionality has been tested against latest CakePHP 3.x version only. Please upgrade if possible.
+## ⚠️ Package Abandoned
+
+**This package is no longer maintained.**
+
+If you're using it, consider switching to [dereuromark/cakephp-translate](https://github.com/dereuromark/cakephp-translate), or fork and maintain it yourself.
 
 ## Installation
 Installing the plugin is pretty much as with every other CakePHP plugin.
