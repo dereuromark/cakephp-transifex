@@ -18,6 +18,7 @@
 	"support": {
 		"source": "https://github.com/dereuromark/cakephp-transifex"
 	},
+	"abandoned": "dereuromark/cakephp-translate",
 	"autoload": {
 		"psr-4": {
 			"Transifex\\": "src",
